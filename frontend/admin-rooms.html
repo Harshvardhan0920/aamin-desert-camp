@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Rooms | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+    // Agar login nahi hai, toh login page par bhej do
+    if (!localStorage.getItem('isAdmin')) {
+        window.location.href = 'admin-login.html';
+    }
+</script>
+    <style>
+        .sidebar-active { background-color: #ca8a04; color: white !important; border-radius: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-white shadow-xl hidden md:flex flex-col flex-shrink-0 h-full relative z-20">
+        <div class="h-20 flex items-center px-6 border-b border-gray-100 bg-yellow-50">
+            <a href="index.html" class="text-xl font-bold text-yellow-700 flex items-center">
+                <i class="fa-solid fa-campground mr-2"></i>Aamin Admin
+            </a>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="admin-dashboard.html" class="sidebar-active flex items-center px-4 py-3 font-medium transition shadow-md">
+                <i class="fa-solid fa-chart-line w-6 text-center mr-3"></i>Dashboard
+            </a>
+            <a href="admin-bookings.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-calendar-check w-6 text-center mr-3"></i>Bookings
+            </a>
+            <a href="admin-rooms.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-bed w-6 text-center mr-3"></i>Manage Rooms
+            </a>
+            <a href="admin-reviews.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-star w-6 text-center mr-3"></i>Reviews Edit
+            </a>
+            <a href="admin-gallery.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-images w-6 text-center mr-3"></i>Gallery Edit
+            </a>
+            <a href="admin-messages.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-envelope w-6 text-center mr-3"></i>Messages
+            </a>
+        </nav>
+        <div class="p-4 border-t border-gray-100">
+            <a href="#" onclick="localStorage.removeItem('isAdmin'); window.location.href='admin-login.html';" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg font-bold transition">
+    <i class="fa-solid fa-right-from-bracket w-6 text-center mr-3"></i>Logout
+</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-full relative overflow-hidden">
+        <header class="h-20 bg-white shadow-sm flex items-center px-6 lg:px-10 z-10 justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">Manage Tents & Rooms</h1>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-6 lg:p-10 pb-20">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-fit">
+                    <h2 class="text-lg font-bold text-gray-800 border-b border-gray-100 pb-4 mb-6">Add New Tent</h2>
+                    <form id="addRoomForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 font-bold mb-2">Tent Name</label>
+                            <input type="text" id="roomName" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-yellow-500" placeholder="e.g. Royal Swiss Tent">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 font-bold mb-2">Price per Night (₹)</label>
+                            <input type="number" id="roomPrice" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-yellow-500" placeholder="e.g. 4500">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 font-bold mb-2">Description</label>
+                            <textarea id="roomDesc" rows="3" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-yellow-500" placeholder="Describe the tent..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 font-bold mb-2">Upload Photo</label>
+                            <input type="file" id="roomImageFile" accept="image/*" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-yellow-500 bg-gray-50">
+                        </div>
+                        <button type="submit" id="saveTentBtn" class="w-full bg-yellow-600 text-white font-bold py-3 rounded-lg hover:bg-yellow-700 transition mt-4 flex justify-center items-center">
+                            Save Tent
+                        </button>
+                        <p id="successMessage" class="hidden text-green-600 text-sm font-bold mt-2 text-center">✅ Tent and Photo added successfully!</p>
+                    </form>
+                </div>
+
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-center border-b border-gray-100 pb-4 mb-6">
+                        <h2 class="text-lg font-bold text-gray-800">Existing Tents</h2>
+                        <button onclick="fetchRooms()" class="text-sm bg-yellow-50 text-yellow-700 font-bold px-3 py-1 rounded border border-yellow-200 hover:bg-yellow-100"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
+                    </div>
+                    <div id="roomsContainer" class="space-y-6">
+                        </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:5000/api/rooms";
+
+        document.getElementById('addRoomForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('saveTentBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Uploading...';
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('name', document.getElementById('roomName').value);
+            formData.append('price', document.getElementById('roomPrice').value);
+            formData.append('description', document.getElementById('roomDesc').value);
+            formData.append('status', 'Active');
+            
+            const fileInput = document.getElementById('roomImageFile');
+            formData.append('imageFile', fileInput.files[0]);
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: formData 
+                });
+
+                if(response.ok) {
+                    document.getElementById('successMessage').classList.remove('hidden');
+                    this.reset();
+                    fetchRooms();
+                    setTimeout(() => document.getElementById('successMessage').classList.add('hidden'), 3000);
+                }
+            } catch (error) {
+                alert("Upload failed!");
+            } finally {
+                btn.innerHTML = 'Save Tent';
+                btn.disabled = false;
+            }
+        });
+
+        async function fetchRooms() {
+            const container = document.getElementById('roomsContainer');
+            try {
+                const response = await fetch(API_URL);
+                const rooms = await response.json();
+
+                if (rooms.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center py-4">No tents found.</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                rooms.forEach(room => {
+                    const roomHTML = `
+                        <div class="flex items-center justify-between border-b border-gray-100 pb-6 mb-6">
+                            <div class="flex items-center">
+                                <img src="${room.image}" alt="Tent" class="w-24 h-20 object-cover rounded-lg shadow-sm mr-4 border">
+                                <div>
+                                    <h3 class="font-bold text-gray-900">${room.name}</h3>
+                                    <p class="text-yellow-600 font-semibold text-sm">₹${room.price} / night</p>
+                                </div>
+                            </div>
+                            <button onclick="deleteRoom('${room._id}')" class="px-4 py-2 bg-red-50 text-red-600 rounded hover:bg-red-100 font-medium text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Delete</button>
+                        </div>
+                    `;
+                    container.innerHTML += roomHTML;
+                });
+            } catch (error) {
+                container.innerHTML = '<p class="text-red-500">Error loading tents.</p>';
+            }
+        }
+
+        async function deleteRoom(id) {
+            if(confirm("Tent delete karein?")) {
+                await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                fetchRooms();
+            }
+        }
+
+        fetchRooms();
+    </script>
+</body>
+</html>

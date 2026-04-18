@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Gallery | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        if (!localStorage.getItem('isAdmin')) {
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+
+    <style>
+        .sidebar-active { background-color: #ca8a04; color: white !important; border-radius: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-white shadow-xl hidden md:flex flex-col flex-shrink-0 h-full relative z-20">
+        <div class="h-20 flex items-center px-6 border-b border-gray-100 bg-yellow-50">
+            <a href="index.html" class="text-xl font-bold text-yellow-700 flex items-center">
+                <i class="fa-solid fa-campground mr-2"></i>Aamin Admin
+            </a>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="admin-dashboard.html" class="sidebar-active flex items-center px-4 py-3 font-medium transition shadow-md">
+                <i class="fa-solid fa-chart-line w-6 text-center mr-3"></i>Dashboard
+            </a>
+            <a href="admin-bookings.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-calendar-check w-6 text-center mr-3"></i>Bookings
+            </a>
+            <a href="admin-rooms.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-bed w-6 text-center mr-3"></i>Manage Rooms
+            </a>
+            <a href="admin-reviews.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-star w-6 text-center mr-3"></i>Reviews Edit
+            </a>
+            <a href="admin-gallery.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-images w-6 text-center mr-3"></i>Gallery Edit
+            </a>
+            <a href="admin-messages.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
+                <i class="fa-solid fa-envelope w-6 text-center mr-3"></i>Messages
+            </a>
+        </nav>
+        <div class="p-4 border-t border-gray-100">
+            <a href="#" onclick="localStorage.removeItem('isAdmin'); window.location.href='admin-login.html';" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg font-bold transition">
+                <i class="fa-solid fa-right-from-bracket w-6 text-center mr-3"></i>Logout
+            </a>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-full overflow-hidden">
+        <header class="h-20 bg-white shadow-sm flex items-center px-6 lg:px-10 z-10 justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">Manage Camp Gallery</h1>
+            <button onclick="fetchGallery()" class="text-yellow-600 font-bold hover:text-yellow-700 bg-yellow-50 px-4 py-2 rounded-lg">
+                <i class="fa-solid fa-rotate mr-1"></i> Refresh
+            </button>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-6 lg:p-10 pb-20">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                
+                <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-fit">
+                    <h2 class="font-bold text-gray-800 mb-4 border-b pb-4">Upload New Photo</h2>
+                    <form id="uploadGalleryForm" class="space-y-4">
+                        <input type="text" id="photoTitle" placeholder="Photo Title" class="w-full px-4 py-2 border border-gray-200 rounded-lg outline-none focus:border-yellow-500">
+                        <input type="file" id="galleryFile" accept="image/*" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100">
+                        <button type="submit" id="upBtn" class="w-full bg-yellow-600 text-white font-bold py-3 rounded-lg hover:bg-yellow-700 transition">Upload to Gallery</button>
+                    </form>
+                </div>
+
+                <div class="lg:col-span-3">
+                    <div id="galleryGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <p class="col-span-full text-gray-400">Loading gallery...</p>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API = "http://localhost:5000/api/gallery";
+
+        async function fetchGallery() {
+            const grid = document.getElementById('galleryGrid');
+            try {
+                const res = await fetch(API);
+                const photos = await res.json();
+                grid.innerHTML = '';
+                if(photos.length === 0) grid.innerHTML = '<p class="text-gray-500">No photos yet.</p>';
+                
+                photos.forEach(p => {
+                    grid.innerHTML += `
+                        <div class="relative group bg-white p-2 rounded-lg shadow-sm border border-gray-100">
+                            <img src="${p.image}" class="w-full h-40 object-cover rounded-md">
+                            <button onclick="deletePhoto('${p._id}')" class="absolute top-4 right-4 bg-red-600 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg hover:bg-red-700">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+            } catch(e) { grid.innerHTML = 'Error loading images.'; }
+        }
+
+        document.getElementById('uploadGalleryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('upBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+            
+            const formData = new FormData();
+            formData.append('title', document.getElementById('photoTitle').value);
+            formData.append('galleryImage', document.getElementById('galleryFile').files[0]);
+
+            const res = await fetch(API, { method: 'POST', body: formData });
+            if(res.ok) {
+                this.reset();
+                fetchGallery();
+            }
+            btn.innerHTML = "Upload to Gallery";
+        });
+
+        async function deletePhoto(id) {
+            if(confirm("Delete this photo?")) {
+                await fetch(`${API}/${id}`, { method: 'DELETE' });
+                fetchGallery();
+            }
+        }
+
+        fetchGallery();
+    </script>
+</body>
+</html>

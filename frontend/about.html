@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Aamin Desert Camp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Light Desert Background for Header */
+        .page-header {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.6)), 
+                              url('https://images.unsplash.com/photo-1542401886-65d6c61de007?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* New Background for "Our Story" Content Section with Parallax Effect */
+        .story-bg {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.9)), 
+                              url('https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* This creates the cool scrolling effect */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+    <nav class="bg-white shadow-md fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-yellow-700">
+                        <i class="fa-solid fa-campground mr-2"></i>Aamin Desert Camp
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+    <a href="index.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Home</a>
+    
+    <a href="about.html" class="text-yellow-600 font-bold border-b-2 border-yellow-600">About Us</a>
+    
+    <a href="gallery.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Gallery</a>
+    <a href="rooms.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Rooms</a>
+    <a href="contact.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Contact</a>
+    
+    <a href="booking.html" class="bg-yellow-600 text-white px-6 py-2 rounded-full font-bold hover:bg-yellow-700 transition">Book Now</a>
+</div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-yellow-600 focus:outline-none text-2xl">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <a href="index.html" class="block px-4 py-3 text-gray-700">Home</a>
+            <a href="about.html" class="block px-4 py-3 text-yellow-700 font-semibold">About Us</a>
+            <a href="gallery.html" class="block px-4 py-3 text-gray-700">Gallery</a>
+            <a href="rooms.html" class="block px-4 py-3 text-gray-700">Rooms</a>
+            <a href="contact.html" class="block px-4 py-3 text-gray-700">Contact</a>
+            <a href="booking.html" class="block px-4 py-3 text-white bg-yellow-600 text-center font-bold">Book Now</a>
+        </div>
+    </nav>
+
+    <header class="page-header h-80 flex items-center justify-center text-center mt-20 border-b border-gray-200">
+        <div>
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-4 drop-shadow-sm">Our Story</h1>
+            <p class="text-xl text-gray-800 font-medium drop-shadow-sm">Discover the heart and soul of Aamin Desert Camp</p>
+        </div>
+    </header>
+
+    <section class="py-20 story-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="w-full md:w-1/2 relative">
+                    <div class="absolute -top-4 -left-4 w-24 h-24 bg-yellow-100 rounded-full z-0"></div>
+                    <img src="https://images.unsplash.com/photo-1543360251-4d3753fc2679?q=80&w=800&auto=format&fit=crop" alt="Desert Camp Hospitality" class="rounded-xl shadow-2xl w-full object-cover h-[500px] relative z-10">
+                    <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-yellow-600 rounded-lg z-0 opacity-20"></div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <span class="text-yellow-700 font-bold text-lg tracking-wider uppercase">Welcome to Aamin</span>
+                    <h2 class="text-4xl font-bold text-gray-900 mt-2 mb-6">Experience the True Essence of the Desert</h2>
+                    <p class="text-gray-800 font-medium mb-6 leading-relaxed text-lg">
+                        Welcome to Aamin Desert Camp, where luxury seamlessly blends with the raw, untamed beauty of the Thar Desert. Founded with a deep-rooted passion for preserving traditional Rajasthani hospitality, we offer an unforgettable escape from the chaos of modern city life.
+                    </p>
+                    <p class="text-gray-800 font-medium mb-8 leading-relaxed text-lg">
+                        Our camp is thoughtfully designed to provide you with the utmost comfort while keeping you connected to nature. Whether you are seeking a peaceful romantic retreat under the starlit sky or an adventurous safari across the rolling golden dunes, our team curates experiences that linger in your memory forever.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex items-center bg-white/60 p-3 rounded-lg shadow-sm border border-white/50">
+                            <div class="w-10 h-10 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mr-3">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span class="font-bold text-gray-900">Premium Tents</span>
+                        </div>
+                        <div class="flex items-center bg-white/60 p-3 rounded-lg shadow-sm border border-white/50">
+                            <div class="w-10 h-10 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mr-3">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span class="font-bold text-gray-900">Authentic Cuisine</span>
+                        </div>
+                        <div class="flex items-center bg-white/60 p-3 rounded-lg shadow-sm border border-white/50">
+                            <div class="w-10 h-10 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mr-3">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span class="font-bold text-gray-900">Expert Guides</span>
+                        </div>
+                        <div class="flex items-center bg-white/60 p-3 rounded-lg shadow-sm border border-white/50">
+                            <div class="w-10 h-10 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mr-3">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span class="font-bold text-gray-900">Eco-Friendly</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gray-50 border-y border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Core Values</h2>
+            <div class="w-24 h-1 bg-yellow-600 mx-auto mb-16"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="bg-white p-10 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-gray-100">
+                    <i class="fa-solid fa-hands-holding-circle text-5xl text-yellow-600 mb-6"></i>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Authentic Hospitality</h3>
+                    <p class="text-gray-600 leading-relaxed">We treat every guest like family. Our goal is to make you feel at home while providing the royal treatment Rajasthan is famous for.</p>
+                </div>
+                
+                <div class="bg-white p-10 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-gray-100">
+                    <i class="fa-solid fa-leaf text-5xl text-yellow-600 mb-6"></i>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Sustainable Tourism</h3>
+                    <p class="text-gray-600 leading-relaxed">We respect the fragile desert ecosystem. Our camp operates with eco-friendly practices to preserve the beauty of the dunes for future generations.</p>
+                </div>
+
+                <div class="bg-white p-10 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-gray-100">
+                    <i class="fa-solid fa-map-location-dot text-5xl text-yellow-600 mb-6"></i>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Unforgettable Adventures</h3>
+                    <p class="text-gray-600 leading-relaxed">From the thrill of dune bashing to the tranquility of a sunset camel ride, we aim to provide experiences that touch your soul.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-yellow-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <h3 class="text-5xl font-bold mb-2">5+</h3>
+                    <p class="text-yellow-100 font-medium text-lg uppercase tracking-wide">Years Experience</p>
+                </div>
+                <div>
+                    <h3 class="text-5xl font-bold mb-2">5000+</h3>
+                    <p class="text-yellow-100 font-medium text-lg uppercase tracking-wide">Happy Guests</p>
+                </div>
+                <div>
+                    <h3 class="text-5xl font-bold mb-2">30+</h3>
+                    <p class="text-yellow-100 font-medium text-lg uppercase tracking-wide">Luxury Tents</p>
+                </div>
+                <div>
+                    <h3 class="text-5xl font-bold mb-2">100%</h3>
+                    <p class="text-yellow-100 font-medium text-lg uppercase tracking-wide">Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-950 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-6 md:mb-0 text-center md:text-left">
+                <a href="#" class="text-2xl font-bold text-yellow-500"><i class="fa-solid fa-campground mr-2"></i>Aamin Desert Camp</a>
+                <p class="text-gray-400 mt-2">Sam Sand Dunes, Jaisalmer, Rajasthan.</p>
+            </div>
+            <div class="mt-4 space-y-2">
+    <a href="tel:+919352918751" class="flex items-center text-gray-400 hover:text-yellow-500 transition">
+        <span class="mr-2">📞</span> +91 9352918751
+    </a>
+    
+    <a href="mailto:aamindesertcamp@gmail.com" class="flex items-center text-gray-400 hover:text-yellow-500 transition">
+        <span class="mr-2">📧</span> aamindesertcamp@gmail.com
+    </a>
+</div>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+        <div class="text-center text-gray-600 mt-10 text-sm border-t border-gray-800 pt-8">
+            &copy; 2026 Aamin Desert Camp. All rights reserved. <br>
+            Designed with <i class="fa-solid fa-heart text-red-600"></i> in Rajasthan.
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
