@@ -288,17 +288,17 @@ app.delete('/api/reviews/:id', async (req, res) => {
         res.status(500).json({ error: "Error deleting review" });
     }
 });
-// Frontend folder ko server ke sath connect karna
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Ye check kar lo ki path sahi hai
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
-// Jab koi main link khole toh seedha index.html dikhana
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+    res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
 });
 // Server Start
-const PORT = 5000;
+
+const PORT = process.env.PORT || 5000; // Render ke liye zaroori hai
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
 // ==========================================
 // 11. Admin Login API
