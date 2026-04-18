@@ -106,22 +106,23 @@ if (menuBtn && mobileMenu) {
         let allImages = [];
         let currentIndex = 0;
 
-        async function loadGallery() {
-            const container = document.getElementById('publicGallery');
-            const res = await fetch('/api/gallery');
-            const photos = await res.json();
-            
-            allImages = photos; // Array mein store kar liya
-            container.innerHTML = '';
+       // Dhyan se dekhna, maine 'async' aur 'const' add kar diya hai
+async function loadGallery() {
+    const container = document.getElementById('publicGallery'); // ID sahi check kar lena
+    const res = await fetch('/api/gallery');
+    const photos = await res.json();
 
-            photos.forEach((p, index) => {
-                container.innerHTML += `
-                    <div class="overflow-hidden rounded-xl shadow-md border border-gray-100 hover:shadow-2xl transition duration-500 group cursor-pointer" onclick="openLightbox(${index})">
-                        <img src="${p.image}" alt="Camp Photo" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                `;
-            });
-        }
+    allImages = photos; // Array mein store kar liya
+    container.innerHTML = ''; // Pehle wala content saaf kar diya
+
+    photos.forEach((p, index) => {
+        container.innerHTML += `
+            <div class="overflow-hidden rounded-xl shadow-lg">
+                <img src="${p.image}" alt="Camp Photo" class="w-full h-64 object-cover">
+            </div>
+        `;
+    });
+}
 
         // Lightbox Functions
         function openLightbox(index) {
