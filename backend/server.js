@@ -288,6 +288,13 @@ app.delete('/api/reviews/:id', async (req, res) => {
         res.status(500).json({ error: "Error deleting review" });
     }
 });
+// Frontend folder ko server ke sath connect karna
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Jab koi main link khole toh seedha index.html dikhana
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
 // Server Start
 const PORT = 5000;
 app.listen(PORT, () => {
