@@ -107,23 +107,38 @@ if (menuBtn && mobileMenu) {
         let currentIndex = 0;
 
        // Dhyan se dekhna, maine 'async' aur 'const' add kar diya hai
+// Ye function tumhari script tag ke andar hona chahiye
 async function loadGallery() {
-    const container = document.getElementById('publicGallery'); // ID sahi check kar lena
-    const res = await fetch('/api/gallery');
-    const photos = await res.json();
+    const container = document.getElementById('publicGallery');
+    if (!container) return; // Agar container nahi mila, toh function band kar do
+    
+    container.innerHTML = "Loading...";
 
-    allImages = photos; // Array mein store kar liya
-    container.innerHTML = ''; // Pehle wala content saaf kar diya
+    try {
+        const res = await fetch('/api/gallery');
+        const photos = await res.json();
 
-    photos.forEach((p, index) => {
-        container.innerHTML += `
-            <div class="overflow-hidden rounded-xl shadow-lg">
-                <img src="${p.image}" alt="Camp Photo" class="w-full h-64 object-cover">
-            </div>
-        `;
-    });
+        container.innerHTML = ''; // Loading hataya
+
+        if (Array.isArray(photos)) {
+            photos.forEach((p) => {
+                container.innerHTML += `
+                    <div class="overflow-hidden rounded-xl shadow-lg">
+                        <img src="${p.image}" alt="Camp Photo" class="w-full h-64 object-cover">
+                    </div>
+                `;
+            });
+        } else {
+            container.innerHTML = "<p>No photos found yet!</p>";
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        container.innerHTML = "<p>Error loading photos.</p>";
+    }
 }
 
+// Function ko call karo
+loadGallery();
         // Lightbox Functions
         function openLightbox(index) {
             currentIndex = index;

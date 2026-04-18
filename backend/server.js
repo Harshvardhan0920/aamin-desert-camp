@@ -189,13 +189,13 @@ app.get('/api/gallery', async (req, res) => {
 // 4. Delete Gallery Photo
 app.get('/api/gallery', async (req, res) => {
     try {
-        // Apne Model ka naam check karo (shuruat capital honi chahiye)
+        // 'GalleryModel' ki jagah apna sahi Model naam use karo
         const photos = await GalleryModel.find({}); 
         
-        // Agar data nahi mila toh bhi khali array bhejo, crash mat hone do
+        // Agar data nahi mila toh bhi khali array [] bhejo, crash mat hone do
         res.status(200).json(photos || []); 
     } catch (error) {
-        console.error("Backend Error:", error); // Ye logs mein dikhega
+        console.error("Backend Error:", error); // Ye log Render mein dikhega
         res.status(500).json({ message: "Server error, check logs" });
     }
 });
