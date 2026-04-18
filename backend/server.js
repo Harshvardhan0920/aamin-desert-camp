@@ -291,9 +291,9 @@ app.delete('/api/reviews/:id', async (req, res) => {
 // Ye code copy-paste karo
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//    res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+// });
 // Server Start
 
 const PORT = process.env.PORT || 5000; // Render ke liye zaroori hai
