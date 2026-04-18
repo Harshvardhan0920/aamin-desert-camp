@@ -187,12 +187,16 @@ app.get('/api/gallery', async (req, res) => {
 });
 
 // 4. Delete Gallery Photo
-app.delete('/api/gallery/:id', async (req, res) => {
+app.get('/api/gallery', async (req, res) => {
     try {
-        await Gallery.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: "Photo deleted" });
+        // Apne Model ka naam check karo (shuruat capital honi chahiye)
+        const photos = await GalleryModel.find({}); 
+        
+        // Agar data nahi mila toh bhi khali array bhejo, crash mat hone do
+        res.status(200).json(photos || []); 
     } catch (error) {
-        res.status(500).json({ error: "Delete failed" });
+        console.error("Backend Error:", error); // Ye logs mein dikhega
+        res.status(500).json({ message: "Server error, check logs" });
     }
 });
 
