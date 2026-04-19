@@ -181,11 +181,14 @@ app.post('/api/gallery', upload.single('galleryImage'), async (req, res) => {
 
 // 3. Get All Gallery Photos
 app.get('/api/gallery', async (req, res) => {
+    console.log("Gallery API called!"); // Ye log check karenge ki request aa bhi rahi hai ya nahi
     try {
-        const photos = await Gallery.find().sort({ date: -1 });
+        const photos = await GalleryModel.find({}); // Check karo kya GalleryModel define kiya hai
+        console.log("Photos found:", photos); // Ye data console mein dikhega
         res.status(200).json(photos);
     } catch (error) {
-        res.status(500).json({ error: "Fetch failed" });
+        console.error("CRASH ERROR:", error); // YE SABSE ZAROORI HAI
+        res.status(500).json({ error: error.message });
     }
 });
 
