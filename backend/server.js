@@ -46,12 +46,14 @@ const upload = multer({ storage: storage });
 // ==========================================
 // Database Connection
 // ==========================================
-mongoose.connect(process.env.MONGO_URI).then(() => {
-    console.log("✅ Database Connected Successfully!");
-}).catch((err) => {
-    console.log("❌ Database Connection Failed:", err);
-});
+// dotenv install hona chahiye (agar nahi hai toh 'npm install dotenv' terminal mein chalao)
+require('dotenv').config(); 
 
+const dbURI = process.env.MONGO_URI; // Ye Render ke Environment tab se link uthayega
+
+mongoose.connect(dbURI)
+  .then(() => console.log('MongoDB connected successfully!'))
+  .catch(err => console.log('DB Connection Error:', err));
 // ==========================================
 // Database Schemas (Designs)
 // ==========================================
