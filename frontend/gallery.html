@@ -5,141 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery | Aamin Desert Camp</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 flex flex-col min-h-screen">
 
-    <nav class="bg-white shadow-md fixed w-full z-50 top-0">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20">
-                <div class="flex items-center">
-                    <a href="index.html" class="text-2xl font-bold text-yellow-700">
-                        <i class="fa-solid fa-campground mr-2"></i>Aamin Desert Camp
-                    </a>
-                </div>
-                <div class="hidden md:flex space-x-8 items-center">
-    <a href="index.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Home</a>
-    <a href="about.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">About Us</a>
-    <a href="gallery.html" class="text-yellow-600 font-bold border-b-2 border-yellow-600">Gallery</a>
-     <a href="rooms.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Rooms</a>
-    <a href="contact.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Contact</a>
-    
-    <a href="booking.html" class="bg-yellow-600 text-white px-6 py-2 rounded-full font-bold hover:bg-yellow-700 transition">Book Now</a>
-</div>
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-yellow-600 focus:outline-none text-2xl">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                </div>
+    <nav class="bg-white shadow-lg p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Aamin Desert Camp</h1>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-yellow-600">Home</a>
+                <a href="gallery.html" class="text-yellow-600 font-bold">Gallery</a>
             </div>
+            <button id="menu-btn" class="md:hidden block">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
-            <a href="index.html" class="block px-4 py-3 text-yellow-700 font-semibold">Home</a>
-            <a href="about.html" class="block px-4 py-3 text-gray-700">About Us</a>
-            <a href="gallery.html" class="block px-4 py-3 text-gray-700">Gallery</a>
-            <a href="rooms.html" class="block px-4 py-3 text-gray-700">Rooms</a>
-            <a href="contact.html" class="block px-4 py-3 text-gray-700">Contact</a>
-            <a href="booking.html" class="block px-4 py-3 text-white bg-yellow-600 text-center font-bold">Book Now</a>
+        <div id="mobileMenu" class="hidden md:hidden bg-white p-4 space-y-4">
+            <a href="index.html" class="block">Home</a>
+            <a href="gallery.html" class="block text-yellow-600 font-bold">Gallery</a>
         </div>
     </nav>
-<script>
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-// Check karo ki menuBtn aur mobileMenu dono exist karte hain ya nahi
-if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-}
-</script>
-
-    <div class="pt-24 bg-yellow-800 text-center py-10"> 
-    <h1 class="text-white text-4xl font-bold">Our Gallery</h1>
-</div>
 
     <main class="flex-grow max-w-7xl mx-auto px-4 py-16 w-full">
+        <h2 class="text-4xl font-bold text-center mb-10">Our Gallery</h2>
         <div id="publicGallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="col-span-full text-center py-20 text-gray-400">Loading...</div>
+            <p class="text-center">Loading...</p>
         </div>
     </main>
 
-    <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-[9999] hidden flex items-center justify-center p-4">
-        <button onclick="closeLightbox()" class="absolute top-5 right-5 text-white text-4xl hover:text-yellow-500 z-[10000]">&times;</button>
-        
-        <button onclick="changeImage(-1)" class="absolute left-5 text-white text-5xl hover:text-yellow-500"><i class="fa-solid fa-chevron-left"></i></button>
-        
-        <img id="lightboxImg" src="" class="max-h-[85vh] max-w-[90vw] object-contain rounded-lg">
-        
-        <button onclick="changeImage(1)" class="absolute right-5 text-white text-5xl hover:text-yellow-500"><i class="fa-solid fa-chevron-right"></i></button>
+    <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-[9999] hidden flex items-center justify-center" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" class="max-w-full max-h-full p-4">
     </div>
-    <footer class="bg-gray-950 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-6 md:mb-0 text-center md:text-left">
-                <a href="#" class="text-2xl font-bold text-yellow-500"><i class="fa-solid fa-campground mr-2"></i>Aamin Desert Camp</a>
-                <p class="text-gray-400 mt-2">Sam Sand Dunes, Jaisalmer, Rajasthan.</p>
-            </div>
-            <div class="mt-4 space-y-2">
-    <a href="tel:+919352918751" class="flex items-center text-gray-400 hover:text-yellow-500 transition">
-        <span class="mr-2">📞</span> +91 9352918751
-    </a>
-    
-    <a href="mailto:aamindesertcamp@gmail.com" class="flex items-center text-gray-400 hover:text-yellow-500 transition">
-        <span class="mr-2">📧</span> aamindesertcamp@gmail.com
-    </a>
-</div>
-            <div class="flex space-x-6">
-                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
-            </div>
-        </div>
-        <div class="text-center text-gray-600 mt-10 text-sm border-t border-gray-800 pt-8">
-            &copy; 2026 Aamin Desert Camp. All rights reserved. <br>
-            Designed with <i class="fa-solid fa-heart text-red-600"></i> in Rajasthan.
-        </div>
-    </footer>
-
 
     <script>
         let allImages = [];
         let currentIndex = 0;
 
-       // Dhyan se dekhna, maine 'async' aur 'const' add kar diya hai
-// Ye function tumhari script tag ke andar hona chahiye
-async function loadGallery() {
-    const container = document.getElementById('publicGallery');
-    if (!container) return; // Agar container nahi mila, toh function band kar do
-    
-    container.innerHTML = "Loading...";
+        // 1. Load Gallery Function
+        async function loadGallery() {
+            const container = document.getElementById('publicGallery');
+            try {
+                const res = await fetch('/api/gallery');
+                const photos = await res.json();
 
-    try {
-        const res = await fetch('/api/gallery');
-        const photos = await res.json();
+                container.innerHTML = ''; // Loading hataya
 
-        container.innerHTML = ''; // Loading hataya
-
-        if (Array.isArray(photos)) {
-            photos.forEach((p) => {
-                container.innerHTML += `
-                    <div class="overflow-hidden rounded-xl shadow-lg">
-                        <img src="${p.image}" alt="Camp Photo" class="w-full h-64 object-cover">
-                    </div>
-                `;
-            });
-        } else {
-            container.innerHTML = "<p>No photos found yet!</p>";
+                if (Array.isArray(photos) && photos.length > 0) {
+                    allImages = photos; // Global array update
+                    photos.forEach((p, index) => {
+                        container.innerHTML += `
+                            <div class="overflow-hidden rounded-xl shadow-lg cursor-pointer" onclick="openLightbox(${index})">
+                                <img src="${p.image}" alt="Camp Photo" class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300">
+                            </div>
+                        `;
+                    });
+                } else {
+                    container.innerHTML = "<p class='col-span-full text-center'>No photos uploaded yet.</p>";
+                }
+            } catch (error) {
+                container.innerHTML = "<p class='col-span-full text-center text-red-500'>Error loading photos.</p>";
+            }
         }
-    } catch (error) {
-        console.error("Error:", error);
-        container.innerHTML = "<p>Error loading photos.</p>";
-    }
-}
 
-// Function ko call karo
-loadGallery();
-        // Lightbox Functions
+        // 2. Mobile Menu Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Initial call
+            loadGallery();
+        });
+
+        // 3. Lightbox Logic
         function openLightbox(index) {
             currentIndex = index;
             const lightbox = document.getElementById('lightbox');
@@ -151,36 +93,6 @@ loadGallery();
         function closeLightbox() {
             document.getElementById('lightbox').classList.add('hidden');
         }
-
-        function changeImage(offset) {
-            currentIndex += offset;
-            // Loop logic: agar end pe pahunch gaye toh wapas start pe
-            if (currentIndex >= allImages.length) currentIndex = 0;
-            if (currentIndex < 0) currentIndex = allImages.length - 1;
-            
-            document.getElementById('lightboxImg').src = allImages[currentIndex].image;
-        }
-
-        loadGallery();
     </script>
-    <script>
-    // 1. Photo load karne wala function (Ise rehne do)
-    async function loadGallery() {
-        // ... tumhara purana code ...
-    }
-    loadGallery(); // Ye function call ho raha hai
-
-    // 2. Mobile menu toggle karne wala naya code (Ise neeche add kar do)
-    document.addEventListener('DOMContentLoaded', () => {
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobileMenu');
-
-        if (menuBtn && mobileMenu) {
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-        }
-    });
-</script>
 </body>
 </html>
