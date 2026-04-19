@@ -153,13 +153,14 @@ app.delete('/api/bookings/:id', async (req, res) => {
 // ==========================================
 
 // 1. Gallery Schema
-const gallerySchema = new mongoose.Schema({
+// server.js mein ye check karo
+const GallerySchema = new mongoose.Schema({
     image: String,
-    title: String,
-    date: { type: Date, default: Date.now }
+    // baaki fields...
 });
-const Gallery = mongoose.model('Gallery', gallerySchema);
 
+// "Gallery" naam ka collection check karega
+const GalleryModel = mongoose.model('Gallery', GallerySchema);
 // 2. Upload Photo to Gallery
 app.post('/api/gallery', upload.single('galleryImage'), async (req, res) => {
     try {
