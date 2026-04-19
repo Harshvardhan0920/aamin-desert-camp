@@ -159,7 +159,7 @@ const GallerySchema = new mongoose.Schema({
     // baaki fields...
 });
 
-// "Gallery" naam ka collection check karega
+// Model ka naam 'Gallery' hai, toh Mongoose automatically 'galleries' collection dhundega
 const GalleryModel = mongoose.model('Gallery', GallerySchema);
 // 2. Upload Photo to Gallery
 app.post('/api/gallery', upload.single('galleryImage'), async (req, res) => {
