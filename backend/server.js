@@ -304,6 +304,40 @@ app.use(express.static(path.join(__dirname, '..', 'frontend')));
 // app.get('*', (req, res) => {
 //    res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
 // });
+// ==========================================
+// Contact Form System
+// ==========================================
+
+// 1. Contact Schema (Database Design)
+const contactSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    subject: String,
+    message: String,
+    date: { type: Date, default: Date.now } // Ye apne aap aaj ki date save kar lega
+});
+
+// Ye MongoDB mein 'contacts' naam ka collection banayega
+const ContactModel = mongoose.model('Contact', contactSchema);
+
+// 2. API Route (Frontend se data lene ke liye)
+app.post('/api/contact', async (req, res) => {
+    try {
+        console.log("New Contact Message:", req.body); // Terminal mein dekhne ke liye
+
+        // Frontend se jo data aaya, use model mein daalo
+        const newMessage = new ContactModel(req.body);
+        
+        // Data ko MongoDB mein save karo
+        await newMessage.save();
+
+        // Frontend ko "Success" message bhejo
+        res.status(200).json({ message: "Message saved successfully!" });
+    } catch (error) {
+        console.error("Contact form error:", error);
+        res.status(500).json({ error: "Failed to save message." });
+    }
+});
 // Server Start
 
 const PORT = process.env.PORT || 5000; // Render ke liye zaroori hai

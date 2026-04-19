@@ -5,126 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us | Aamin Desert Camp</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 flex flex-col min-h-screen">
 
-    <nav class="bg-white shadow-md fixed w-full z-50 top-0">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20">
-                <div class="flex items-center">
-                    <a href="index.html" class="text-2xl font-bold text-yellow-700">
-                        <i class="fa-solid fa-campground mr-2"></i>Aamin Desert Camp
-                    </a>
-                </div>
-                <div class="hidden md:flex space-x-8 items-center">
-    <a href="index.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Home</a>
-    <a href="about.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">About Us</a>
-    <a href="gallery.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Gallery</a>
-    <a href="rooms.html" class="text-gray-600 hover:text-yellow-600 font-medium transition">Rooms</a>
-    
-    <a href="contact.html" class="text-yellow-600 font-bold border-b-2 border-yellow-600">Contact</a>
-    
-    <a href="booking.html" class="bg-yellow-600 text-white px-6 py-2 rounded-full font-bold hover:bg-yellow-700 transition">Book Now</a>
-</div>
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-yellow-600 focus:outline-none text-2xl">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                </div>
-            </div>
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-yellow-700">
+                <i class="fa-solid fa-campground"></i>
+                Aamin Desert Camp
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-6 font-semibold text-gray-600">
+                <a href="index.html" class="hover:text-yellow-600 transition">Home</a>
+                <a href="about.html" class="hover:text-yellow-600 transition">About Us</a>
+                <a href="gallery.html" class="hover:text-yellow-600 transition">Gallery</a>
+                <a href="rooms.html" class="hover:text-yellow-600 transition">Rooms</a>
+                <a href="contact.html" class="text-yellow-600 border-b-2 border-yellow-600 pb-1">Contact</a>
+                <a href="booking.html" class="bg-yellow-600 text-white px-6 py-2 rounded-full hover:bg-yellow-700 transition shadow-md">Book Now</a>
+            </nav>
+
+            <button id="menu-btn" class="md:hidden text-2xl text-gray-700 focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
-            <a href="index.html" class="block px-4 py-3 text-yellow-700 font-semibold">Home</a>
-            <a href="about.html" class="block px-4 py-3 text-gray-700">About Us</a>
-            <a href="gallery.html" class="block px-4 py-3 text-gray-700">Gallery</a>
-            <a href="rooms.html" class="block px-4 py-3 text-gray-700">Rooms</a>
-            <a href="contact.html" class="block px-4 py-3 text-gray-700">Contact</a>
-            <a href="booking.html" class="block px-4 py-3 text-white bg-yellow-600 text-center font-bold">Book Now</a>
+
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t pb-4 px-4 flex flex-col space-y-4 font-semibold text-gray-600">
+            <a href="index.html" class="block pt-3">Home</a>
+            <a href="about.html" class="block">About Us</a>
+            <a href="gallery.html" class="block">Gallery</a>
+            <a href="rooms.html" class="block">Rooms</a>
+            <a href="contact.html" class="block text-yellow-600">Contact</a>
+            <a href="booking.html" class="block bg-yellow-600 text-white text-center py-2 rounded-md shadow">Book Now</a>
         </div>
-    </nav>
+    </header>
 
-<script>
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-</script>
+    <div class="bg-yellow-800 text-white py-16 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-3">Get in Touch</h1>
+        <p class="text-lg opacity-90">We'd love to hear from you. Drop us a message!</p>
+    </div>
 
-    <div class="pt-28 bg-yellow-800 text-center py-10"> 
-    <h1 class="text-white text-4xl font-bold">Get In Touch</h1>
-    <p class="text-white mt-2">Have questions? We'd love to hear from you. Send us a message!</p>
-</div>
-
-    <main class="flex-grow max-w-3xl mx-auto px-4 py-16 w-full">
-        <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-12 w-full">
+        <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100">
             <form id="contactForm" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Your Name</label>
-                        <input type="text" id="name" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 outline-none" placeholder="John Doe">
+                        <label class="block text-gray-700 font-medium mb-2">Your Name</label>
+                        <input type="text" id="name" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition" placeholder="John Doe">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
-                        <input type="email" id="email" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 outline-none" placeholder="john@example.com">
+                        <label class="block text-gray-700 font-medium mb-2">Email Address</label>
+                        <input type="email" id="email" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition" placeholder="john@example.com">
                     </div>
                 </div>
+
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Subject</label>
-                    <input type="text" id="subject" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 outline-none" placeholder="How can we help you?">
+                    <label class="block text-gray-700 font-medium mb-2">Subject</label>
+                    <input type="text" id="subject" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition" placeholder="How can we help?">
                 </div>
+
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Your Message</label>
-                    <textarea id="message" rows="5" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 outline-none" placeholder="Write your message here..."></textarea>
+                    <label class="block text-gray-700 font-medium mb-2">Your Message</label>
+                    <textarea id="message" rows="5" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition resize-none" placeholder="Write your message here..."></textarea>
                 </div>
-                <button type="submit" class="w-full bg-yellow-600 text-white text-lg font-bold py-4 rounded-xl hover:bg-yellow-700 transition shadow-lg">
-                    <i class="fa-solid fa-paper-plane mr-2"></i> Send Message
-                </button>
-                
-                <div id="msgSuccess" class="hidden bg-green-50 text-green-700 p-4 rounded-lg text-center font-bold">
-                    ✅ Thank you! Your message has been sent. We will reply soon.
+
+                <div>
+                    <button type="submit" id="submitBtn" class="w-full bg-yellow-600 text-white font-bold py-4 rounded-lg hover:bg-yellow-700 transition shadow-lg flex justify-center items-center gap-2">
+                        <span>Send Message</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                    <div id="statusMessage" class="mt-4 text-center font-medium hidden rounded-lg py-3"></div>
                 </div>
             </form>
         </div>
     </main>
 
-    <footer class="bg-gray-950 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-6 md:mb-0 text-center md:text-left">
-                <a href="#" class="text-2xl font-bold text-yellow-500"><i class="fa-solid fa-campground mr-2"></i>Aamin Desert Camp</a>
-                <p class="text-gray-400 mt-2">Sam Sand Dunes, Jaisalmer, Rajasthan.</p>
-            </div>
-            <div class="mt-4 space-y-2">
-    <a href="tel:+919352918751" class="flex items-center text-gray-400 hover:text-yellow-500 transition">
-        <span class="mr-2">📞</span> +91 9352918751
-    </a>
-    
-    <a href="mailto:aamindesertcamp@gmail.com" class="flex items-center text-gray-400 hover:text-yellow-500 transition">
-        <span class="mr-2">📧</span> aamindesertcamp@gmail.com
-    </a>
-</div>
-            <div class="flex space-x-6">
-                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
-            </div>
-        </div>
-        <div class="text-center text-gray-600 mt-10 text-sm border-t border-gray-800 pt-8">
-            &copy; 2026 Aamin Desert Camp. All rights reserved. <br>
-            Designed with <i class="fa-solid fa-heart text-red-600"></i> in Rajasthan.
-        </div>
+    <footer class="bg-gray-900 text-white text-center py-6 mt-auto">
+        <p>&copy; 2026 Aamin Desert Camp. All rights reserved.</p>
     </footer>
 
-
     <script>
-        document.getElementById('contactForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const btn = this.querySelector('button[type="submit"]');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Sending...';
+        // 1. Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+
+        // 2. Form Submission Logic
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Page refresh roko
+
+            const submitBtn = document.getElementById('submitBtn');
+            const statusMessage = document.getElementById('statusMessage');
             
-            const data = {
+            // Button ko loading state mein daalo
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            statusMessage.classList.add('hidden'); // Purane message chhupao
+
+            // Form ka data jama karo
+            const contactData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 subject: document.getElementById('subject').value,
@@ -132,21 +119,33 @@
             };
 
             try {
-                const res = await fetch("http://localhost:5000/api/messages", {
+                // Backend par data bhejo (Ensure tumhara backend /api/contact route handle karta ho)
+                const res = await fetch('/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(contactData)
                 });
-                
-                if(res.ok) {
-                    document.getElementById('msgSuccess').classList.remove('hidden');
-                    this.reset();
+
+                if (res.ok) {
+                    // Success Message
+                    statusMessage.textContent = "Thank you! Your message has been sent successfully.";
+                    statusMessage.className = "mt-4 text-center font-medium text-green-700 bg-green-100 rounded-lg py-3 block";
+                    document.getElementById('contactForm').reset(); // Form clear karo
+                } else {
+                    // Backend Error Message
+                    statusMessage.textContent = "Oops! Something went wrong on the server. Please try again.";
+                    statusMessage.className = "mt-4 text-center font-medium text-red-700 bg-red-100 rounded-lg py-3 block";
                 }
-            } catch (err) {
-                alert("Error sending message!");
+            } catch (error) {
+                // Network Error Message
+                console.error("Error:", error);
+                statusMessage.textContent = "Connection error. Please check your internet or backend server.";
+                statusMessage.className = "mt-4 text-center font-medium text-red-700 bg-red-100 rounded-lg py-3 block";
             } finally {
-                btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> Send Message';
-                setTimeout(() => document.getElementById('msgSuccess').classList.add('hidden'), 5000);
+                // Button wapas normal karo
+                submitBtn.innerHTML = '<span>Send Message</span><i class="fa-solid fa-paper-plane"></i>';
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
             }
         });
     </script>
