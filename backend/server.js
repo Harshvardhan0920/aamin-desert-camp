@@ -23,7 +23,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 2. DATABASE CONNECTION
 // ==========================================
 // 🛑 IMPORTANT: Yahan apni asli MongoDB Atlas String daalna!
-const MONGO_URI = "YOUR_MONGODB_ATLAS_CONNECTION_STRING"; 
+const MONGO_URI = "mongodb+srv://admin:AaminDesert@cluster0.ptckt1u.mongodb.net/?appName=Cluster0"; 
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log("✅ MongoDB Connected Successfully"))
@@ -184,7 +184,7 @@ app.post('/api/bookings', async (req, res) => {
 
         // Send Email to Customer
         const mailOptions = {
-            from: 'Aamin Desert Camp <YOUR_EMAIL_HERE@gmail.com>', // Replace with your email
+            from: 'Aamin Desert Camp <aamindesertcamp@gmail.com>', // Replace with your email
             to: bookingData.email,
             subject: '🏕️ Booking Received - Aamin Desert Camp',
             text: `Hello ${bookingData.name},\n\nThank you for choosing Aamin Desert Camp!\n\nWe have received your booking request for the ${bookingData.tentType} from ${bookingData.checkInDate} to ${bookingData.checkOutDate} for ${bookingData.guests} guests.\n\nOur team is reviewing your request and will get back to you shortly to confirm your reservation.\n\nWarm Regards,\nAamin Desert Camp Team\n+91 9352918751`
