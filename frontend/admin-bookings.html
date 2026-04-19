@@ -5,165 +5,201 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Bookings | Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-    // Agar login nahi hai, toh login page par bhej do
-    if (!localStorage.getItem('isAdmin')) {
-        window.location.href = 'admin-login.html';
-    }
-</script>
-    <style>
-        .sidebar-active {
-            background-color: #ca8a04;
-            color: white !important;
-            border-radius: 0.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
+<body class="bg-gray-50 font-sans text-gray-900 flex h-screen overflow-hidden">
 
-<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
-
-    <aside class="w-64 bg-white shadow-xl hidden md:flex flex-col flex-shrink-0 h-full relative z-20">
-        <div class="h-20 flex items-center px-6 border-b border-gray-100 bg-yellow-50">
-            <a href="index.html" class="text-xl font-bold text-yellow-700 flex items-center">
-                <i class="fa-solid fa-campground mr-2"></i>Aamin Admin
-            </a>
+    <aside class="w-64 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 relative">
+        <div class="p-6 text-xl font-extrabold text-yellow-700 flex items-center gap-3 border-b border-gray-100">
+            <i class="fa-solid fa-campground text-2xl"></i>
+            Aamin Admin
         </div>
-        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-            <a href="admin-dashboard.html" class="sidebar-active flex items-center px-4 py-3 font-medium transition shadow-md">
-                <i class="fa-solid fa-chart-line w-6 text-center mr-3"></i>Dashboard
+
+        <nav class="flex-1 px-4 space-y-2 mt-6 overflow-y-auto">
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+                <i class="fa-solid fa-chart-line w-5"></i> Dashboard
             </a>
-            <a href="admin-bookings.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-calendar-check w-6 text-center mr-3"></i>Bookings
+            
+            <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white shadow-md font-bold">
+                <i class="fa-solid fa-calendar-check w-5"></i> Bookings
             </a>
-            <a href="admin-rooms.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-bed w-6 text-center mr-3"></i>Manage Rooms
+
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+                <i class="fa-solid fa-bed w-5"></i> Manage Rooms
             </a>
-            <a href="admin-reviews.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-star w-6 text-center mr-3"></i>Reviews Edit
+
+            <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+                <i class="fa-solid fa-images w-5"></i> Gallery Edit
             </a>
-            <a href="admin-gallery.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-images w-6 text-center mr-3"></i>Gallery Edit
-            </a>
-            <a href="admin-messages.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-envelope w-6 text-center mr-3"></i>Messages
+
+            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+                <i class="fa-solid fa-envelope w-5"></i> Messages
             </a>
         </nav>
-        <div class="p-4 border-t border-gray-100">
-           <a href="#" onclick="localStorage.removeItem('isAdmin'); window.location.href='admin-login.html';" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg font-bold transition">
-    <i class="fa-solid fa-right-from-bracket w-6 text-center mr-3"></i>Logout
-</a>
+
+        <div class="p-4 border-t border-gray-100 mt-auto">
+            <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition cursor-pointer">
+                <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
+            </a>
         </div>
     </aside>
 
-    <div class="flex-1 flex flex-col h-full relative overflow-hidden">
-        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-6 lg:px-10 z-10">
-            <h1 class="text-2xl font-bold text-gray-800">Recent Bookings</h1>
-            <button onclick="fetchBookings()" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg border border-yellow-200 hover:bg-yellow-200 font-bold transition">
-                <i class="fa-solid fa-arrows-rotate mr-2"></i>Refresh Data
-            </button>
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50">
+        
+        <header class="bg-white shadow-sm px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+            <h2 class="text-2xl font-bold text-gray-800">Manage Bookings</h2>
+            <div class="flex items-center gap-4">
+                <span class="text-gray-600 font-medium">Hello, Admin</span>
+                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold shadow-md">
+                    A
+                </div>
+            </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-6 lg:p-10 pb-20">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-8 flex-1 overflow-y-auto">
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">All Reservations</h3>
+                    <button onclick="loadBookings()" class="text-gray-500 hover:text-yellow-600 transition">
+                        <i class="fa-solid fa-rotate-right"></i> Refresh
+                    </button>
+                </div>
+
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-gray-50 text-gray-600 text-sm border-b border-gray-100">
-                                <th class="py-4 px-6 font-bold">Guest Name</th>
-                                <th class="py-4 px-6 font-bold">Contact Info</th>
-                                <th class="py-4 px-6 font-bold">Tent Type</th>
-                                <th class="py-4 px-6 font-bold">Dates</th>
-                                <th class="py-4 px-6 font-bold text-center">Guests</th>
-                                <th class="py-4 px-6 font-bold">Status</th>
-                                <th class="py-4 px-6 font-bold">Booked On</th>
+                            <tr class="bg-gray-50 text-gray-500 text-sm uppercase tracking-wider">
+                                <th class="p-4 font-semibold">Guest Info</th>
+                                <th class="p-4 font-semibold">Tent / Dates</th>
+                                <th class="p-4 font-semibold">Status</th>
+                                <th class="p-4 font-semibold text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="bookingsTableBody" class="divide-y divide-gray-50">
+                        <tbody id="bookingsList" class="divide-y divide-gray-100">
                             <tr>
-                                <td colspan="7" class="text-center py-8 text-gray-400">
-                                    <i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i>
-                                    <p>Loading bookings from database...</p>
-                                </td>
+                                <td colspan="4" class="p-8 text-center text-gray-500">Loading bookings...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
 
     <script>
-        const API_URL = "http://localhost:5000/api/bookings";
+        // 1. Fetch and Display Bookings
+        async function loadBookings() {
+            const tableBody = document.getElementById('bookingsList');
+            tableBody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Loading...</td></tr>';
 
-        async function fetchBookings() {
-            const tableBody = document.getElementById('bookingsTableBody');
-            
             try {
-                // Backend se data lene ki request
-                const response = await fetch(API_URL);
-                const bookings = await response.json();
+                const res = await fetch('/api/bookings');
+                const bookings = await res.json();
 
-                // Agar database khali hai
-                if (bookings.length === 0) {
+                tableBody.innerHTML = '';
+                
+                if (!Array.isArray(bookings) || bookings.length === 0) {
                     tableBody.innerHTML = `
                         <tr>
-                            <td colspan="7" class="text-center py-10 text-gray-500">
-                                <i class="fa-regular fa-folder-open text-4xl mb-3 text-gray-300"></i>
-                                <p class="text-lg">Abhi tak koi booking nahi aayi hai.</p>
+                            <td colspan="4" class="p-10 text-center">
+                                <i class="fa-solid fa-calendar-xmark text-4xl text-gray-300 mb-3"></i>
+                                <p class="text-gray-500 font-medium">No bookings found yet.</p>
                             </td>
                         </tr>`;
                     return;
                 }
 
-                tableBody.innerHTML = ''; // Purana loading text hatao
-
-                // Har ek booking ko table ki ek line (row) mein convert karna
                 bookings.forEach(booking => {
-                    // Dates ko padhne layak (readable) format mein badalna
-                    const checkInDate = new Date(booking.checkIn).toLocaleDateString('en-IN');
-                    const checkOutDate = new Date(booking.checkOut).toLocaleDateString('en-IN');
-                    const bookedDate = new Date(booking.bookingDate).toLocaleDateString('en-IN');
+                    const bookingId = booking._id || booking.id;
+                    
+                    // Status Badge Colors
+                    let statusColor = 'bg-yellow-100 text-yellow-700'; // Default Pending
+                    let currentStatus = booking.status || 'Pending';
+                    if (currentStatus === 'Confirmed') statusColor = 'bg-green-100 text-green-700';
+                    if (currentStatus === 'Cancelled') statusColor = 'bg-red-100 text-red-700';
 
-                    const row = `
-                        <tr class="hover:bg-yellow-50 transition duration-150">
-                            <td class="py-4 px-6 font-bold text-gray-900">${booking.guestName}</td>
-                            <td class="py-4 px-6 text-sm">
-                                <div class="font-medium text-gray-800"><i class="fa-solid fa-phone mr-1 text-gray-400"></i> ${booking.phone}</div>
-                                <div class="text-gray-500"><i class="fa-solid fa-envelope mr-1 text-gray-400"></i> ${booking.email}</div>
+                    // Format Dates safely
+                    const checkIn = new Date(booking.checkInDate).toLocaleDateString() || 'N/A';
+                    const checkOut = new Date(booking.checkOutDate).toLocaleDateString() || 'N/A';
+
+                    tableBody.innerHTML += `
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="p-4">
+                                <div class="font-bold text-gray-800">${booking.name || 'Unknown User'}</div>
+                                <div class="text-sm text-gray-500">${booking.email || 'N/A'}</div>
+                                <div class="text-sm text-gray-500"><i class="fa-solid fa-phone text-xs"></i> ${booking.phone || 'N/A'}</div>
                             </td>
-                            <td class="py-4 px-6 text-sm font-bold text-yellow-700">${booking.roomType}</td>
-                            <td class="py-4 px-6 text-sm">
-                                <div class="text-green-600 font-medium">In: ${checkInDate}</div>
-                                <div class="text-red-500 font-medium">Out: ${checkOutDate}</div>
+                            <td class="p-4">
+                                <div class="font-bold text-gray-800">${booking.tentType || 'Standard Tent'}</div>
+                                <div class="text-sm text-gray-500">${checkIn} to ${checkOut}</div>
+                                <div class="text-sm text-gray-500">${booking.guests || 1} Guests</div>
                             </td>
-                            <td class="py-4 px-6 text-sm text-center font-medium text-gray-700">
-                                ${booking.adults} Adults<br>
-                                <span class="text-gray-400 text-xs">${booking.children} Kids</span>
-                            </td>
-                            <td class="py-4 px-6 text-sm">
-                                <span class="bg-yellow-100 text-yellow-800 py-1 px-3 rounded-full text-xs font-bold border border-yellow-200">
-                                    ${booking.status}
+                            <td class="p-4">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold ${statusColor}">
+                                    ${currentStatus}
                                 </span>
                             </td>
-                            <td class="py-4 px-6 text-sm text-gray-500">${bookedDate}</td>
+                            <td class="p-4 text-center">
+                                <div class="flex flex-col gap-2 justify-center items-center">
+                                    <select onchange="updateStatus('${bookingId}', this.value)" class="text-sm border border-gray-300 rounded p-1 outline-none focus:border-yellow-500 cursor-pointer">
+                                        <option value="" disabled selected>Change Status</option>
+                                        <option value="Confirmed">Mark Confirmed</option>
+                                        <option value="Pending">Mark Pending</option>
+                                        <option value="Cancelled">Mark Cancelled</option>
+                                    </select>
+                                    <button onclick="deleteBooking('${bookingId}')" class="text-red-500 hover:text-red-700 text-sm font-semibold transition">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     `;
-                    tableBody.innerHTML += row;
                 });
             } catch (error) {
-                console.error("Error:", error);
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center py-6 text-red-500 font-bold">
-                            ❌ Error loading bookings. Make sure Backend server is running!
-                        </td>
-                    </tr>`;
+                tableBody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-red-500">Error fetching bookings from server.</td></tr>';
             }
         }
 
-        // Page load hote hi apne aap bookings fetch karo
-        fetchBookings();
+        // 2. Update Booking Status
+        async function updateStatus(id, newStatus) {
+            if(!newStatus) return;
+            
+            try {
+                const res = await fetch(`/api/bookings/${id}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (res.ok) {
+                    loadBookings(); // Refresh table to show new color
+                } else {
+                    alert("Failed to update status");
+                }
+            } catch (error) {
+                alert("Connection error!");
+            }
+        }
+
+        // 3. Delete Booking
+        async function deleteBooking(id) {
+            if (!confirm("Are you sure you want to permanently delete this booking?")) return;
+
+            try {
+                const res = await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    loadBookings(); // Refresh table
+                } else {
+                    alert("Failed to delete booking.");
+                }
+            } catch (error) {
+                alert("Error deleting booking.");
+            }
+        }
+
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', loadBookings);
     </script>
 </body>
 </html>

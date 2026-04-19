@@ -5,155 +5,204 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Aamin Desert Camp</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        if (!localStorage.getItem('isAdmin')) {
-            window.location.href = 'admin-login.html';
-        }
-    </script>
-
-    <style>
-        .sidebar-active { background-color: #ca8a04; color: white !important; border-radius: 0.5rem; }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
-<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+<body class="bg-gray-50 font-sans text-gray-900 flex h-screen overflow-hidden">
 
-    <aside class="w-64 bg-white shadow-xl hidden md:flex flex-col flex-shrink-0 h-full relative z-20">
-        <div class="h-20 flex items-center px-6 border-b border-gray-100 bg-yellow-50">
-            <a href="index.html" class="text-xl font-bold text-yellow-700 flex items-center">
-                <i class="fa-solid fa-campground mr-2"></i>Aamin Admin
-            </a>
+    <aside class="w-64 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 relative">
+        <div class="p-6 text-xl font-extrabold text-yellow-700 flex items-center gap-3 border-b border-gray-100">
+            <i class="fa-solid fa-campground text-2xl"></i>
+            Aamin Admin
         </div>
-        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-            <a href="admin-dashboard.html" class="sidebar-active flex items-center px-4 py-3 font-medium transition shadow-md">
-                <i class="fa-solid fa-chart-line w-6 text-center mr-3"></i>Dashboard
+
+        <nav class="flex-1 px-4 space-y-2 mt-6 overflow-y-auto">
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white shadow-md font-bold">
+                <i class="fa-solid fa-chart-line w-5"></i> Dashboard
             </a>
-            <a href="admin-bookings.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-calendar-check w-6 text-center mr-3"></i>Bookings
+            
+            <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+                <i class="fa-solid fa-calendar-check w-5"></i> Bookings
             </a>
-            <a href="admin-rooms.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-bed w-6 text-center mr-3"></i>Manage Rooms
+
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+                <i class="fa-solid fa-bed w-5"></i> Manage Rooms
             </a>
-            <a href="admin-reviews.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-star w-6 text-center mr-3"></i>Reviews Edit
+
+            <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+                <i class="fa-solid fa-images w-5"></i> Gallery Edit
             </a>
-            <a href="admin-gallery.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-images w-6 text-center mr-3"></i>Gallery Edit
-            </a>
-            <a href="admin-messages.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-envelope w-6 text-center mr-3"></i>Messages
+
+            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+                <i class="fa-solid fa-envelope w-5"></i> Messages
             </a>
         </nav>
-        <div class="p-4 border-t border-gray-100">
-            <a href="#" onclick="localStorage.removeItem('isAdmin'); window.location.href='admin-login.html';" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg font-bold transition">
-                <i class="fa-solid fa-right-from-bracket w-6 text-center mr-3"></i>Logout
+
+        <div class="p-4 border-t border-gray-100 mt-auto">
+            <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition cursor-pointer">
+                <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
             </a>
         </div>
     </aside>
 
-    <div class="flex-1 flex flex-col h-full relative overflow-hidden">
-        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-6 lg:px-10 z-10">
-            <h1 class="text-2xl font-bold text-gray-800">Live Overview</h1>
-            <button onclick="fetchLiveStats()" class="text-yellow-600 font-bold hover:text-yellow-700 bg-yellow-50 px-4 py-2 rounded-lg transition">
-                <i class="fa-solid fa-rotate mr-1"></i> Refresh Data
-            </button>
+    <main class="flex-1 flex flex-col h-full overflow-y-auto bg-gray-50">
+        
+        <header class="bg-white shadow-sm px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+            <h2 class="text-2xl font-bold text-gray-800">Overview</h2>
+            
+            <div class="flex items-center gap-4">
+                <span class="text-gray-600 font-medium">Hello, Admin</span>
+                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold shadow-md">
+                    A
+                </div>
+            </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-6 lg:p-10 pb-20">
+        <div class="p-8">
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <p class="text-xs text-gray-500 font-bold uppercase">Total Bookings</p>
-                    <h3 id="statTotalBookings" class="text-3xl font-black text-gray-800">...</h3>
+                
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition cursor-default">
+                    <div>
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Total Bookings</p>
+                        <h3 id="totalBookings" class="text-3xl font-extrabold text-gray-800">--</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <p class="text-xs text-gray-500 font-bold uppercase">Available Tents</p>
-                    <h3 class="text-3xl font-black text-gray-800"><span id="statAvailable">...</span> / <span id="statLimit">30</span></h3>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition cursor-default">
+                    <div>
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Total Tents</p>
+                        <h3 id="totalTents" class="text-3xl font-extrabold text-gray-800">--</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-tent"></i>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <p class="text-xs text-gray-500 font-bold uppercase">Total Revenue</p>
-                    <h3 id="statRevenue" class="text-3xl font-black text-gray-800">...</h3>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition cursor-default">
+                    <div>
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Est. Revenue</p>
+                        <h3 id="totalRevenue" class="text-3xl font-extrabold text-gray-800">₹--</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <p class="text-xs text-gray-500 font-bold uppercase">Inquiries</p>
-                    <h3 id="statInquiries" class="text-3xl font-black text-gray-800">...</h3>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition cursor-default">
+                    <div>
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Messages</p>
+                        <h3 id="totalMessages" class="text-3xl font-extrabold text-gray-800">--</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">Recent Bookings</h3>
+                    <a href="admin-bookings.html" class="text-sm font-bold text-yellow-600 hover:text-yellow-700 bg-yellow-50 px-4 py-2 rounded-lg transition">View All</a>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-500 text-sm uppercase tracking-wider">
+                                <th class="p-4 font-semibold">Guest Name</th>
+                                <th class="p-4 font-semibold">Tent Type</th>
+                                <th class="p-4 font-semibold">Check-In</th>
+                                <th class="p-4 font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentBookingsList" class="divide-y divide-gray-100">
+                            <tr>
+                                <td colspan="4" class="p-8 text-center text-gray-500">
+                                    <i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading data...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-6 py-5 border-b border-gray-100 bg-gray-50">
-                    <h2 class="text-lg font-bold text-gray-800">Recent Bookings Quick Actions</h2>
-                </div>
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="text-gray-500 text-xs uppercase border-b">
-                            <th class="py-4 px-6">Guest Name</th>
-                            <th class="py-4 px-6">Tent Type</th>
-                            <th class="py-4 px-6">Status</th>
-                            <th class="py-4 px-6 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recentBookingsTable" class="divide-y">
-                        <tr><td colspan="4" class="text-center py-6">Loading...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </main>
-    </div>
+        </div>
+    </main>
 
     <script>
-        const API_URL = "http://localhost:5000";
-
-        async function fetchLiveStats() {
+        async function loadDashboardData() {
             try {
-                const res = await fetch(`${API_URL}/api/stats`);
-                const data = await res.json();
-
-                document.getElementById('statTotalBookings').textContent = data.totalBookings;
-                document.getElementById('statAvailable').textContent = data.availableTents;
-                document.getElementById('statLimit').textContent = data.totalTentsLimit;
-                document.getElementById('statRevenue').textContent = '₹' + data.totalRevenue.toLocaleString('en-IN');
-                document.getElementById('statInquiries').textContent = data.newInquiries;
-
-                const tableBody = document.getElementById('recentBookingsTable');
-                tableBody.innerHTML = ''; 
-
-                data.recentBookingsSnapshot.forEach(booking => {
-                    let badge = booking.status === 'Confirmed' ? 'bg-green-100 text-green-700' : (booking.status === 'Cancelled' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700');
+                // 1. Fetch Bookings Data
+                const bookingRes = await fetch('/api/bookings');
+                if (bookingRes.ok) {
+                    const bookings = await bookingRes.json();
                     
-                    tableBody.innerHTML += `
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-4 px-6 font-bold">${booking.guestName}</td>
-                            <td class="py-4 px-6 text-sm text-gray-700">${booking.roomType}</td>
-                            <td class="py-4 px-6"><span class="px-2 py-1 ${badge} rounded text-xs font-bold">${booking.status}</span></td>
-                            <td class="py-4 px-6 text-right space-x-2">
-                                <button onclick="updateStatus('${booking._id}', 'Confirmed')" class="text-green-600 hover:bg-green-100 p-2 rounded"><i class="fa-solid fa-check"></i></button>
-                                <button onclick="updateStatus('${booking._id}', 'Cancelled')" class="text-orange-500 hover:bg-orange-100 p-2 rounded"><i class="fa-solid fa-xmark"></i></button>
-                                <button onclick="deleteBooking('${booking._id}')" class="text-red-600 hover:bg-red-100 p-2 rounded"><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            } catch (err) { console.error(err); }
-        }
+                    // Update Total Bookings Card
+                    document.getElementById('totalBookings').innerText = bookings.length;
 
-        async function updateStatus(id, newStatus) {
-            await fetch(`${API_URL}/api/bookings/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: newStatus })
-            });
-            fetchLiveStats();
-        }
+                    // Calculate basic estimated revenue (Assuming avg 5000 per booking if not specified)
+                    let estimatedRevenue = bookings.length * 5000;
+                    
+                    // Format large numbers (e.g. 10000 -> 10K)
+                    if (estimatedRevenue >= 100000) {
+                        document.getElementById('totalRevenue').innerText = '₹' + (estimatedRevenue / 100000).toFixed(1) + 'L';
+                    } else {
+                        document.getElementById('totalRevenue').innerText = '₹' + estimatedRevenue.toLocaleString();
+                    }
 
-        async function deleteBooking(id) {
-            if(confirm("Permanent delete karein?")) {
-                await fetch(`${API_URL}/api/bookings/${id}`, { method: 'DELETE' });
-                fetchLiveStats();
+                    // Populate Recent Bookings Table (Show only top 4)
+                    const tableBody = document.getElementById('recentBookingsList');
+                    tableBody.innerHTML = '';
+                    
+                    if (bookings.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-gray-500">No bookings yet.</td></tr>';
+                    } else {
+                        bookings.slice(0, 4).forEach(b => {
+                            let statusColor = 'bg-yellow-100 text-yellow-700'; // Pending
+                            let statusText = b.status || 'Pending';
+                            if (statusText === 'Confirmed') statusColor = 'bg-green-100 text-green-700';
+                            if (statusText === 'Cancelled') statusColor = 'bg-red-100 text-red-700';
+
+                            const checkIn = new Date(b.checkInDate).toLocaleDateString() || 'N/A';
+
+                            tableBody.innerHTML += `
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="p-4">
+                                        <div class="font-bold text-gray-800">${b.name || 'Unknown'}</div>
+                                        <div class="text-xs text-gray-500">${b.email || 'N/A'}</div>
+                                    </td>
+                                    <td class="p-4 text-gray-600">${b.tentType || 'Standard Tent'}</td>
+                                    <td class="p-4 text-gray-600">${checkIn}</td>
+                                    <td class="p-4">
+                                        <span class="px-3 py-1 rounded-full text-xs font-bold ${statusColor}">
+                                            ${statusText}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+                }
+
+                // 2. Fetch Rooms Data for "Total Tents" Card
+                const roomRes = await fetch('/api/rooms');
+                if (roomRes.ok) {
+                    const rooms = await roomRes.json();
+                    document.getElementById('totalTents').innerText = rooms.length;
+                }
+
+            } catch (error) {
+                console.error("Dashboard error:", error);
+                document.getElementById('recentBookingsList').innerHTML = '<tr><td colspan="4" class="p-6 text-center text-red-500">Error loading dashboard data.</td></tr>';
             }
         }
 
-        fetchLiveStats();
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
     </script>
 </body>
 </html>

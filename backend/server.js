@@ -117,44 +117,43 @@ app.get('/api/rooms', async (req, res) => {
 });*/
 
 // 4. BOOKINGS APIs
-app.post('/api/bookings', async (req, res) => {
-    const newBooking = new Booking(req.body);
-    console.log("Database mein aaya hua data:", req.body); // Ye line add karo
-    await newBooking.save();
+// ==========================================
+// Bookings Management API
+// ==========================================
 
-    // --- EMAIL LOGIC YAHA ADD KARO ---
-    const mailOptions = {
-        from: 'aamindesertcamp@gmail.com', // Apna wahi email dalo jo transporter mein hai
-        to: 'harshrathore0100@gmail.com', // Jahan notifications chahiye
-        subject: 'New Booking at Aamin Desert Camp!',
-        // Is tarah change karo (Example)
-text: `Nayi booking details:
-Name: ${req.body.fullName} 
-Date: ${req.body.bookingDate}`
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) console.log("Email error:", error);
-        else console.log('Email sent: ' + info.response);
-    });
-    // --- EMAIL LOGIC KHATAM ---
-
-    res.status(201).json({ message: "Booking saved!" });
-});
-
+// 1. Get all bookings
 app.get('/api/bookings', async (req, res) => {
-    const bookings = await Booking.find().sort({ bookingDate: -1 });
-    res.status(200).json(bookings);
+    try {
+        const bookings = await BookingModel.find().sort({ createdAt: -1 }); // Nayi booking upar aayegi
+        res.status(200).json(bookings);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch bookings" });
+    }
 });
 
-app.put('/api/bookings/:id', async (req, res) => {
-    const updated = await Booking.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
-    res.status(200).json(updated);
+// 2. Update Booking Status (Confirmed, Cancelled, etc.)
+app.put('/api/bookings/:id/status', async (req, res) => {
+    try {
+        const { status } = req.body;
+        const updatedBooking = await BookingModel.findByIdAndUpdate(
+            req.params.id, 
+            { status: status }, 
+            { new: true }
+        );
+        res.status(200).json({ message: "Status updated!", booking: updatedBooking });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to update status" });
+    }
 });
 
+// 3. Delete Booking
 app.delete('/api/bookings/:id', async (req, res) => {
-    await Booking.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Booking deleted!" });
+    try {
+        await BookingModel.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "Booking deleted!" });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to delete booking" });
+    }
 });
 // ==========================================
 // 10. Gallery System
@@ -170,62 +169,68 @@ const GallerySchema = new mongoose.Schema({
 // Model ka naam 'Gallery' hai, toh Mongoose automatically 'galleries' collection dhundega
 const GalleryModel = mongoose.model('Gallery', GallerySchema);
 // 2. Upload Photo to Gallery
-app.post('/api/gallery', upload.single('galleryImage'), async (req, res) => {
+// ==========================================
+// Gallery Management API
+// ==========================================
+
+// 1. Add New Photo
+app.post('/api/gallery', async (req, res) => {
     try {
-        let imageUrl = "";
-        if (req.file) {
-            imageUrl = 'http://localhost:5000/uploads/' + req.file.filename;
-        }
-        const newPhoto = new Gallery({
-            image: imageUrl,
-            title: req.body.title || "Camp Photo"
-        });
+        const newPhoto = new GalleryModel({ image: req.body.image });
         await newPhoto.save();
-        res.status(201).json({ message: "Photo uploaded to gallery!" });
+        res.status(201).json({ message: "Photo added successfully!" });
     } catch (error) {
-        res.status(500).json({ error: "Upload failed" });
+        res.status(500).json({ error: "Failed to add photo" });
     }
 });
 
-// 3. Get All Gallery Photos
-app.get('/api/gallery', async (req, res) => {
-    console.log("Gallery API called!"); // Ye log check karenge ki request aa bhi rahi hai ya nahi
+// 2. Update (Edit) Photo URL
+app.put('/api/gallery/:id', async (req, res) => {
     try {
-        const photos = await GalleryModel.find({}); // Check karo kya GalleryModel define kiya hai
-        console.log("Photos found:", photos); // Ye data console mein dikhega
-        res.status(200).json(photos);
+        const updatedPhoto = await GalleryModel.findByIdAndUpdate(
+            req.params.id, 
+            { image: req.body.image }, 
+            { new: true }
+        );
+        res.status(200).json({ message: "Photo updated!", photo: updatedPhoto });
     } catch (error) {
-        console.error("CRASH ERROR:", error); // YE SABSE ZAROORI HAI
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: "Failed to update photo" });
     }
 });
 
-// 4. Delete Gallery Photo
-/*app.get('/api/gallery', async (req, res) => {
+// 3. Delete Photo
+app.delete('/api/gallery/:id', async (req, res) => {
     try {
-        // 'GalleryModel' ki jagah apna sahi Model naam use karo
-        const photos = await GalleryModel.find({}); 
-        
-        // Agar data nahi mila toh bhi khali array [] bhejo, crash mat hone do
-        res.status(200).json(photos || []); 
+        await GalleryModel.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "Photo deleted!" });
     } catch (error) {
-        console.error("Backend Error:", error); // Ye log Render mein dikhega
-        res.status(500).json({ message: "Server error, check logs" });
+        res.status(500).json({ error: "Failed to delete photo" });
     }
-});*/
-
+});
 // 5. MESSAGES APIs
-app.post('/api/messages', async (req, res) => {
-    const newMsg = new Message(req.body);
-    await newMsg.save();
-    res.status(201).json({ success: "Message sent!" });
-});
+// ==========================================
+// Messages / Inquiry Management API
+// ==========================================
+
+// 1. Saare messages fetch karna
 app.get('/api/messages', async (req, res) => {
-    const messages = await Message.find().sort({ date: -1 });
-    res.status(200).json(messages);
+    try {
+        const messages = await ContactModel.find().sort({ date: -1 }); // Newest first
+        res.status(200).json(messages);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch messages" });
+    }
 });
 
-// 6. DYNAMIC DASHBOARD STATS (Smart Logic)
+// 2. Message delete karna
+app.delete('/api/messages/:id', async (req, res) => {
+    try {
+        await ContactModel.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "Message deleted!" });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to delete message" });
+    }
+});// 6. DYNAMIC DASHBOARD STATS (Smart Logic)
 app.get('/api/stats', async (req, res) => {
     try {
         const totalBookingsCount = await Booking.countDocuments();
@@ -277,36 +282,57 @@ const reviewSchema = new mongoose.Schema({
 const Review = mongoose.models.Review || mongoose.model('Review', reviewSchema);
 
 // 2. Add Review
-app.post('/api/reviews', async (req, res) => {
-    try {
-        const newReview = new Review(req.body);
-        await newReview.save();
-        res.status(201).json({ message: "Review added!" });
-    } catch (error) {
-        res.status(500).json({ error: "Error saving review" });
-    }
-});
+// ==========================================
+// Reviews & Ratings API
+// ==========================================
 
-// 3. Get All Reviews
+// 1. Get all reviews
 app.get('/api/reviews', async (req, res) => {
     try {
-        const reviews = await Review.find().sort({ date: -1 });
+        // Naye reviews pehle dikhenge
+        const reviews = await ReviewModel.find().sort({ createdAt: -1 }); 
         res.status(200).json(reviews);
     } catch (error) {
-        res.status(500).json({ error: "Error fetching reviews" });
+        res.status(500).json({ error: "Failed to fetch reviews" });
     }
 });
 
-// 4. Delete Review
-app.delete('/api/reviews/:id', async (req, res) => {
+// 2. Add a new review
+app.post('/api/reviews', async (req, res) => {
     try {
-        await Review.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: "Review deleted!" });
+        const { name, text, rating } = req.body;
+        const newReview = new ReviewModel({ name, text, rating });
+        await newReview.save();
+        res.status(201).json({ message: "Review added successfully!" });
     } catch (error) {
-        res.status(500).json({ error: "Error deleting review" });
+        res.status(500).json({ error: "Failed to add review" });
     }
 });
-// Ye code copy-paste karo
+
+// 3. Update (Edit) a review
+app.put('/api/reviews/:id', async (req, res) => {
+    try {
+        const { name, text, rating } = req.body;
+        const updatedReview = await ReviewModel.findByIdAndUpdate(
+            req.params.id, 
+            { name, text, rating }, 
+            { new: true }
+        );
+        res.status(200).json({ message: "Review updated!", review: updatedReview });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to update review" });
+    }
+});
+
+// 4. Delete a review
+app.delete('/api/reviews/:id', async (req, res) => {
+    try {
+        await ReviewModel.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "Review deleted!" });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to delete review" });
+    }
+});// Ye code copy-paste karo
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 // app.get('*', (req, res) => {
