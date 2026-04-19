@@ -193,7 +193,7 @@ app.get('/api/gallery', async (req, res) => {
 });
 
 // 4. Delete Gallery Photo
-app.get('/api/gallery', async (req, res) => {
+/*app.get('/api/gallery', async (req, res) => {
     try {
         // 'GalleryModel' ki jagah apna sahi Model naam use karo
         const photos = await GalleryModel.find({}); 
@@ -204,7 +204,7 @@ app.get('/api/gallery', async (req, res) => {
         console.error("Backend Error:", error); // Ye log Render mein dikhega
         res.status(500).json({ message: "Server error, check logs" });
     }
-});
+});*/
 
 // 5. MESSAGES APIs
 app.post('/api/messages', async (req, res) => {
