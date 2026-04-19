@@ -182,8 +182,7 @@
     async function loadPublicReviews() {
         const container = document.getElementById('publicReviewsContainer');
         try {
-            const res = await fetch('http://localhost:5000/api/reviews');
-            const reviews = await res.json();
+            const res = await fetch('/api/reviews');            const reviews = await res.json();
             
             container.innerHTML = ''; // Loading text hata do
 
