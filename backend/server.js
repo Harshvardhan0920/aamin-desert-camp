@@ -36,8 +36,8 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         // 🛑 IMPORTANT: Apna Gmail aur 16-digit App Password yahan dalo!
-        user: 'YOUR_EMAIL_HERE@gmail.com', 
-        pass: 'YOUR_APP_PASSWORD_HERE'     
+        user: 'aamindesertcamp@gmail.com', 
+        pass: 'uwes vbql pbim gtawE'     
     }
 });
 
