@@ -6,90 +6,145 @@
     <title>Manage Gallery | Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <script>
+        if (localStorage.getItem('adminAuth') !== 'true') {
+            alert("Direct access denied! Please login first.");
+            window.location.href = 'admin-login.html';
+        }
+    </script>
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 flex h-screen overflow-hidden">
 
-    <aside class="w-64 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 relative">
+    <div class="md:hidden flex justify-between items-center bg-white p-4 shadow-md absolute w-full z-30">
+        <div class="text-lg font-extrabold text-yellow-700 flex items-center gap-2">
+            <i class="fa-solid fa-campground"></i> Aamin Admin
+        </div>
+        <button id="mobileMenuBtn" class="text-2xl text-gray-700 focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <div id="mobileSidebar" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden">
+        <aside class="w-64 bg-white shadow-xl flex flex-col h-full transform transition-transform">
+            <div class="p-4 flex justify-end border-b border-gray-100">
+                <button id="closeMenuBtn" class="text-2xl text-gray-500 hover:text-red-500 transition">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 mt-4 overflow-y-auto">
+                <a href="index.html" class="flex items-center gap-3 px-4 py-3 mb-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 font-bold">
+                    <i class="fa-solid fa-globe w-5"></i> View Website
+                </a>
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-chart-line w-5"></i> Dashboard
+                </a>
+                <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-calendar-check w-5"></i> Bookings
+                </a>
+                <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-bed w-5"></i> Manage Rooms
+                </a>
+                <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white font-bold shadow-md">
+                    <i class="fa-solid fa-images w-5"></i> Gallery Edit
+                </a>
+                <a href="admin-reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-star w-5"></i> Manage Reviews
+                </a>
+                <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-envelope w-5"></i> Messages
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-100">
+                <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition">
+                    <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    <aside class="w-64 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 relative border-r border-gray-100">
         <div class="p-6 text-xl font-extrabold text-yellow-700 flex items-center gap-3 border-b border-gray-100">
             <i class="fa-solid fa-campground text-2xl"></i>
             Aamin Admin
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6 overflow-y-auto">
-            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="index.html" class="flex items-center gap-3 px-4 py-3 mb-4 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-600 hover:text-white transition font-bold shadow-sm">
+                <i class="fa-solid fa-globe w-5"></i> View Website
+            </a>
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-chart-line w-5"></i> Dashboard
             </a>
-            
-            <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-calendar-check w-5"></i> Bookings
             </a>
-
-            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-bed w-5"></i> Manage Rooms
             </a>
-
             <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white shadow-md font-bold">
                 <i class="fa-solid fa-images w-5"></i> Gallery Edit
             </a>
-
-            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
+                <i class="fa-solid fa-star w-5"></i> Manage Reviews
+            </a>
+            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-envelope w-5"></i> Messages
             </a>
         </nav>
 
         <div class="p-4 border-t border-gray-100 mt-auto">
-            <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition cursor-pointer">
+            <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition">
                 <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
-            </a>
+            </button>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-y-auto bg-gray-50">
+    <main class="flex-1 flex flex-col h-full overflow-y-auto bg-gray-50 pt-16 md:pt-0">
         
-        <header class="bg-white shadow-sm px-8 py-5 flex justify-between items-center sticky top-0 z-10">
-            <h2 class="text-2xl font-bold text-gray-800">Manage Gallery</h2>
+        <header class="bg-white shadow-sm px-4 md:px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-800">Manage Gallery</h2>
             <div class="flex items-center gap-4">
-                <span class="text-gray-600 font-medium">Hello, Admin</span>
-                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold shadow-md">
-                    A
-                </div>
+                <span class="text-gray-600 font-medium hidden sm:block">Hello, Admin</span>
+                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold shadow-md">A</div>
             </div>
         </header>
 
-        <div class="p-8 flex flex-col lg:flex-row gap-8">
+        <div class="p-4 md:p-8 flex flex-col lg:flex-row gap-6 md:gap-8">
             
             <div class="w-full lg:w-1/3">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
-                    <h3 id="formTitle" class="text-xl font-bold mb-6 text-gray-800 border-b pb-3">Add New Photo</h3>
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-20 md:top-24">
+                    <h3 class="text-lg md:text-xl font-bold mb-4 md:mb-6 text-gray-800 border-b pb-3">Upload New Photo</h3>
                     
-                    <form id="galleryForm" class="space-y-5">
-                        <input type="hidden" id="photoId"> 
+                    <form id="galleryForm" class="space-y-4 md:space-y-5">
                         
                         <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Image URL</label>
-                            <input type="url" id="image" placeholder="https://..." required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 outline-none transition">
-                            <p class="text-xs text-gray-400 mt-2"><i class="fa-solid fa-circle-info"></i> Paste a direct link to the image.</p>
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Select Image File</label>
+                            <input type="file" id="imageFile" accept="image/*" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-xl outline-none transition cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 text-sm">
+                        </div>
+
+                        <div id="previewContainer" class="hidden border rounded-xl overflow-hidden bg-gray-50">
+                            <img id="imagePreview" src="" class="w-full h-32 md:h-40 object-cover">
                         </div>
                         
                         <div class="pt-2">
-                            <button type="submit" id="submitBtn" class="w-full bg-yellow-600 text-white font-bold p-3 rounded-xl hover:bg-yellow-700 transition shadow-md">
-                                Add Photo
-                            </button>
-                            <button type="button" id="cancelEditBtn" onclick="cancelEdit()" class="w-full mt-3 bg-gray-200 text-gray-700 font-bold p-3 rounded-xl hover:bg-gray-300 transition hidden">
-                                Cancel Edit
+                            <button type="submit" id="submitBtn" class="w-full bg-yellow-600 text-white font-bold p-3 rounded-xl hover:bg-yellow-700 transition shadow-md flex justify-center items-center gap-2">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Photo
                             </button>
                         </div>
                     </form>
-                    <div id="msg" class="mt-4 text-center font-bold"></div>
+                    <div id="msg" class="mt-4 text-center font-bold text-sm"></div>
                 </div>
             </div>
 
             <div class="w-full lg:w-2/3">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 class="text-xl font-bold mb-6 text-gray-800 border-b pb-3">Existing Photos</h3>
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-lg md:text-xl font-bold mb-4 md:mb-6 text-gray-800 border-b pb-3">Current Gallery</h3>
                     
-                    <div id="galleryList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        <p class="text-gray-500 col-span-full">Fetching photos...</p>
+                    <div id="galleryList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                        <p class="text-gray-500 col-span-full">Loading photos...</p>
                     </div>
                 </div>
             </div>
@@ -97,38 +152,67 @@
     </main>
 
     <script>
-        let isEditing = false;
-        let allPhotos = [];
+        // --- Mobile Menu Toggle Logic ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileSidebar = document.getElementById('mobileSidebar');
 
-        // 1. Fetch and Display Photos
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileSidebar.classList.remove('hidden');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileSidebar.classList.add('hidden');
+        });
+
+        // --- Logout Function ---
+        function logoutAdmin() {
+            localStorage.removeItem('adminAuth');
+            window.location.href = 'index.html';
+        }
+
+        let base64String = "";
+
+        // 1. Image Preview & Base64 Conversion
+        document.getElementById('imageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                base64String = reader.result;
+                const preview = document.getElementById('imagePreview');
+                preview.src = base64String;
+                document.getElementById('previewContainer').classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        });
+
+        // 2. Fetch and Display Gallery
         async function loadGallery() {
             const container = document.getElementById('galleryList');
+            container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading...</p>';
+            
             try {
                 const res = await fetch('/api/gallery');
-                allPhotos = await res.json();
+                const photos = await res.json();
 
                 container.innerHTML = '';
-                if (!Array.isArray(allPhotos) || allPhotos.length === 0) {
-                    container.innerHTML = `
-                        <div class="col-span-full text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                            <i class="fa-solid fa-image text-4xl text-gray-300 mb-3"></i>
-                            <p class="text-gray-500 font-medium">No photos found. Add your first photo!</p>
-                        </div>`;
+                if (!Array.isArray(photos) || photos.length === 0) {
+                    container.innerHTML = `<p class="text-gray-500 col-span-full text-center py-8">No photos found. Upload your first photo!</p>`;
                     return;
                 }
 
-                allPhotos.forEach(photo => {
+                photos.forEach(photo => {
                     const photoId = photo._id || photo.id; 
                     
+                    // SIRF DELETE BUTTON HAI, EDIT HATA DIYA HAI
                     container.innerHTML += `
-                        <div class="relative group rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-gray-100 h-48">
+                        <div class="relative group rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-gray-100 h-40 md:h-48">
                             <img src="${photo.image}" class="w-full h-full object-cover">
                             
-                            <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition duration-300 gap-3">
-                                <button onclick="editPhoto('${photoId}')" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-bold hover:bg-blue-50 transition w-32 shadow-lg">
-                                    <i class="fa-solid fa-pen"></i> Edit
-                                </button>
-                                <button onclick="deletePhoto('${photoId}')" class="bg-red-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-700 transition w-32 shadow-lg">
+                            <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition duration-300">
+                                <button onclick="deletePhoto('${photoId}')" class="bg-red-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-700 transition shadow-lg flex items-center gap-2">
                                     <i class="fa-solid fa-trash"></i> Delete
                                 </button>
                             </div>
@@ -136,103 +220,74 @@
                     `;
                 });
             } catch (error) {
-                container.innerHTML = '<p class="text-red-500 col-span-full">Error loading photos from server.</p>';
+                container.innerHTML = '<p class="text-red-500 col-span-full text-center">Server error while loading photos.</p>';
             }
         }
 
-        // 2. Add or Update Photo
+        // 3. Upload New Photo (NO EDIT)
         document.getElementById('galleryForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const msgBox = document.getElementById('msg');
             const submitBtn = document.getElementById('submitBtn');
-            const imageUrl = document.getElementById('image').value;
-            const photoId = document.getElementById('photoId').value;
+
+            if(!base64String) {
+                msgBox.textContent = "Please select an image file first!";
+                msgBox.className = "mt-4 text-center font-bold text-red-700 bg-red-100 p-2 rounded-xl text-sm";
+                return;
+            }
 
             try {
-                let res;
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
 
-                if (isEditing) {
-                    res = await fetch(`/api/gallery/${photoId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ image: imageUrl })
-                    });
-                } else {
-                    res = await fetch('/api/gallery', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ image: imageUrl })
-                    });
-                }
+                const res = await fetch('/api/gallery', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: base64String })
+                });
 
                 if (res.ok) {
-                    msgBox.textContent = isEditing ? "Photo Updated!" : "Photo Added!";
-                    msgBox.className = "mt-4 text-sm text-center font-bold text-green-700 bg-green-100 p-3 rounded-xl";
-                    cancelEdit();
+                    msgBox.textContent = "Photo Uploaded Successfully!";
+                    msgBox.className = "mt-4 text-center font-bold text-green-700 bg-green-100 p-2 rounded-xl text-sm";
+                    
+                    // Form reset karo
+                    document.getElementById('galleryForm').reset();
+                    document.getElementById('previewContainer').classList.add('hidden');
+                    base64String = "";
+                    
+                    // List refresh karo
                     loadGallery(); 
+                    
                     setTimeout(() => msgBox.textContent = '', 3000);
                 } else {
                     throw new Error("Server Error");
                 }
             } catch (error) {
-                msgBox.textContent = "Error saving photo!";
-                msgBox.className = "mt-4 text-sm text-center font-bold text-red-700 bg-red-100 p-3 rounded-xl";
+                msgBox.textContent = "Error uploading photo!";
+                msgBox.className = "mt-4 text-center font-bold text-red-700 bg-red-100 p-2 rounded-xl text-sm";
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = isEditing ? 'Update Photo' : 'Add Photo';
+                submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Photo';
             }
         });
 
-        // 3. Setup Edit Mode
-        function editPhoto(id) {
-            const photo = allPhotos.find(p => (p._id || p.id) === id);
-            if (!photo) return;
-
-            document.getElementById('photoId').value = id;
-            document.getElementById('image').value = photo.image;
-
-            isEditing = true;
-            document.getElementById('formTitle').textContent = "Edit Photo URL";
-            document.getElementById('submitBtn').innerHTML = 'Update Photo';
-            document.getElementById('submitBtn').classList.replace('bg-yellow-600', 'bg-blue-600');
-            document.getElementById('submitBtn').classList.replace('hover:bg-yellow-700', 'hover:bg-blue-700');
-            document.getElementById('cancelEditBtn').classList.remove('hidden');
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // 4. Cancel Edit Mode
-        function cancelEdit() {
-            isEditing = false;
-            document.getElementById('galleryForm').reset();
-            document.getElementById('photoId').value = '';
-            
-            document.getElementById('formTitle').textContent = "Add New Photo";
-            document.getElementById('submitBtn').innerHTML = 'Add Photo';
-            document.getElementById('submitBtn').classList.replace('bg-blue-600', 'bg-yellow-600');
-            document.getElementById('submitBtn').classList.replace('hover:bg-blue-700', 'hover:bg-yellow-700');
-            document.getElementById('cancelEditBtn').classList.add('hidden');
-        }
-
-        // 5. Delete Photo
+        // 4. Delete Photo Logic
         async function deletePhoto(id) {
-            if (!confirm("Are you sure you want to delete this photo from the gallery?")) return;
+            if (!confirm("Are you sure you want to permanently delete this photo?")) return;
 
             try {
                 const res = await fetch(`/api/gallery/${id}`, { method: 'DELETE' });
                 if (res.ok) {
                     loadGallery(); 
                 } else {
-                    alert("Failed to delete photo.");
+                    alert("Failed to delete photo from server.");
                 }
             } catch (error) {
                 alert("Connection error while deleting.");
             }
         }
 
-        // Initialize Data
+        // Run on start
         document.addEventListener('DOMContentLoaded', loadGallery);
     </script>
 </body>

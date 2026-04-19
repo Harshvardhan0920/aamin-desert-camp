@@ -6,113 +6,158 @@
     <title>Admin Dashboard | Aamin Desert Camp</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    
+    <script>
+        if (localStorage.getItem('adminAuth') !== 'true') {
+            alert("Direct access denied! Please login first.");
+            window.location.href = 'admin-login.html';
+        }
+    </script>
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 flex h-screen overflow-hidden">
 
-    <aside class="w-64 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 relative">
+    <div class="md:hidden flex justify-between items-center bg-white p-4 shadow-md absolute w-full z-30">
+        <div class="text-lg font-extrabold text-yellow-700 flex items-center gap-2">
+            <i class="fa-solid fa-campground"></i> Aamin Admin
+        </div>
+        <button id="mobileMenuBtn" class="text-2xl text-gray-700 focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <div id="mobileSidebar" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden">
+        <aside class="w-64 bg-white shadow-xl flex flex-col h-full transform transition-transform">
+            <div class="p-4 flex justify-end border-b border-gray-100">
+                <button id="closeMenuBtn" class="text-2xl text-gray-500 hover:text-red-500">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 mt-4 overflow-y-auto">
+                <a href="index.html" class="flex items-center gap-3 px-4 py-3 mb-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 font-bold">
+                    <i class="fa-solid fa-globe w-5"></i> View Website
+                </a>
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white font-bold">
+                    <i class="fa-solid fa-chart-line w-5"></i> Dashboard
+                </a>
+                <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold">
+                    <i class="fa-solid fa-calendar-check w-5"></i> Bookings
+                </a>
+                <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold">
+                    <i class="fa-solid fa-bed w-5"></i> Manage Rooms
+                </a>
+                <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold">
+                    <i class="fa-solid fa-images w-5"></i> Gallery Edit
+                </a>
+                <a href="admin-reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold">
+                    <i class="fa-solid fa-star w-5"></i> Manage Reviews
+                </a>
+                <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold">
+                    <i class="fa-solid fa-envelope w-5"></i> Messages
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-100">
+                <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold">
+                    <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    <aside class="w-64 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 relative border-r border-gray-100">
         <div class="p-6 text-xl font-extrabold text-yellow-700 flex items-center gap-3 border-b border-gray-100">
             <i class="fa-solid fa-campground text-2xl"></i>
             Aamin Admin
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6 overflow-y-auto">
+            <a href="index.html" class="flex items-center gap-3 px-4 py-3 mb-4 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-600 hover:text-white transition font-bold shadow-sm">
+                <i class="fa-solid fa-globe w-5"></i> View Website
+            </a>
             <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white shadow-md font-bold">
                 <i class="fa-solid fa-chart-line w-5"></i> Dashboard
             </a>
-            
-            <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-calendar-check w-5"></i> Bookings
             </a>
-
-            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-bed w-5"></i> Manage Rooms
             </a>
-
-            <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-images w-5"></i> Gallery Edit
             </a>
-
-            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
+                <i class="fa-solid fa-star w-5"></i> Manage Reviews
+            </a>
+            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-envelope w-5"></i> Messages
             </a>
         </nav>
 
         <div class="p-4 border-t border-gray-100 mt-auto">
-            <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition cursor-pointer">
+            <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition">
                 <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
-            </a>
+            </button>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-y-auto bg-gray-50">
+    <main class="flex-1 flex flex-col h-full overflow-y-auto bg-gray-50 pt-16 md:pt-0">
         
-        <header class="bg-white shadow-sm px-8 py-5 flex justify-between items-center sticky top-0 z-10">
-            <h2 class="text-2xl font-bold text-gray-800">Overview</h2>
-            
+        <header class="bg-white shadow-sm px-4 md:px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-800">Overview</h2>
             <div class="flex items-center gap-4">
-                <span class="text-gray-600 font-medium">Hello, Admin</span>
-                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold shadow-md">
-                    A
-                </div>
+                <span class="text-gray-600 font-medium hidden sm:block">Hello, Admin</span>
+                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold shadow-md">A</div>
             </div>
         </header>
 
-        <div class="p-8">
+        <div class="p-4 md:p-8">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition cursor-default">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Total Bookings</p>
-                        <h3 id="totalBookings" class="text-3xl font-extrabold text-gray-800">--</h3>
+                        <p class="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Bookings</p>
+                        <h3 id="totalBookings" class="text-2xl md:text-3xl font-extrabold text-gray-800">--</h3>
                     </div>
-                    <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-calendar-check"></i>
-                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg md:text-xl"><i class="fa-solid fa-calendar-check"></i></div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition cursor-default">
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Total Tents</p>
-                        <h3 id="totalTents" class="text-3xl font-extrabold text-gray-800">--</h3>
+                        <p class="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Tents</p>
+                        <h3 id="totalTents" class="text-2xl md:text-3xl font-extrabold text-gray-800">--</h3>
                     </div>
-                    <div class="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-tent"></i>
-                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-lg md:text-xl"><i class="fa-solid fa-tent"></i></div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition cursor-default">
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Est. Revenue</p>
-                        <h3 id="totalRevenue" class="text-3xl font-extrabold text-gray-800">₹--</h3>
+                        <p class="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Revenue</p>
+                        <h3 id="totalRevenue" class="text-2xl md:text-3xl font-extrabold text-gray-800">₹--</h3>
                     </div>
-                    <div class="w-12 h-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-lg md:text-xl"><i class="fa-solid fa-indian-rupee-sign"></i></div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition cursor-default">
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Messages</p>
-                        <h3 id="totalMessages" class="text-3xl font-extrabold text-gray-800">--</h3>
+                        <p class="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Messages</p>
+                        <h3 id="totalMessages" class="text-2xl md:text-3xl font-extrabold text-gray-800">--</h3>
                     </div>
-                    <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-envelope"></i>
-                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-lg md:text-xl"><i class="fa-solid fa-envelope"></i></div>
                 </div>
-
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                    <h3 class="text-xl font-bold text-gray-800">Recent Bookings</h3>
-                    <a href="admin-bookings.html" class="text-sm font-bold text-yellow-600 hover:text-yellow-700 bg-yellow-50 px-4 py-2 rounded-lg transition">View All</a>
+                <div class="p-4 md:p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800">Recent Bookings</h3>
+                    <a href="admin-bookings.html" class="text-xs md:text-sm font-bold text-yellow-600 bg-yellow-50 px-3 py-2 rounded-lg">View All</a>
                 </div>
                 
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
-                            <tr class="bg-gray-50 text-gray-500 text-sm uppercase tracking-wider">
+                            <tr class="bg-gray-50 text-gray-500 text-xs md:text-sm uppercase tracking-wider">
                                 <th class="p-4 font-semibold">Guest Name</th>
                                 <th class="p-4 font-semibold">Tent Type</th>
                                 <th class="p-4 font-semibold">Check-In</th>
@@ -120,11 +165,7 @@
                             </tr>
                         </thead>
                         <tbody id="recentBookingsList" class="divide-y divide-gray-100">
-                            <tr>
-                                <td colspan="4" class="p-8 text-center text-gray-500">
-                                    <i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading data...
-                                </td>
-                            </tr>
+                            <tr><td colspan="4" class="p-8 text-center text-gray-500">Loading data...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -134,74 +175,86 @@
     </main>
 
     <script>
+        // --- Mobile Menu Toggle Logic ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileSidebar.classList.remove('hidden');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileSidebar.classList.add('hidden');
+        });
+
+        // --- Logout Logic ---
+        function logoutAdmin() {
+            localStorage.removeItem('adminAuth');
+            window.location.href = 'index.html';
+        }
+
+        // --- Fetch Dashboard Stats ---
         async function loadDashboardData() {
             try {
-                // 1. Fetch Bookings Data
+                // Fetch Bookings
                 const bookingRes = await fetch('/api/bookings');
                 if (bookingRes.ok) {
                     const bookings = await bookingRes.json();
-                    
-                    // Update Total Bookings Card
                     document.getElementById('totalBookings').innerText = bookings.length;
 
-                    // Calculate basic estimated revenue (Assuming avg 5000 per booking if not specified)
+                    // Revenue Calc
                     let estimatedRevenue = bookings.length * 5000;
-                    
-                    // Format large numbers (e.g. 10000 -> 10K)
                     if (estimatedRevenue >= 100000) {
                         document.getElementById('totalRevenue').innerText = '₹' + (estimatedRevenue / 100000).toFixed(1) + 'L';
                     } else {
                         document.getElementById('totalRevenue').innerText = '₹' + estimatedRevenue.toLocaleString();
                     }
 
-                    // Populate Recent Bookings Table (Show only top 4)
+                    // Table
                     const tableBody = document.getElementById('recentBookingsList');
                     tableBody.innerHTML = '';
-                    
                     if (bookings.length === 0) {
                         tableBody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-gray-500">No bookings yet.</td></tr>';
                     } else {
                         bookings.slice(0, 4).forEach(b => {
-                            let statusColor = 'bg-yellow-100 text-yellow-700'; // Pending
+                            let statusColor = 'bg-yellow-100 text-yellow-700';
                             let statusText = b.status || 'Pending';
                             if (statusText === 'Confirmed') statusColor = 'bg-green-100 text-green-700';
                             if (statusText === 'Cancelled') statusColor = 'bg-red-100 text-red-700';
 
                             const checkIn = new Date(b.checkInDate).toLocaleDateString() || 'N/A';
-
                             tableBody.innerHTML += `
-                                <tr class="hover:bg-gray-50 transition">
-                                    <td class="p-4">
-                                        <div class="font-bold text-gray-800">${b.name || 'Unknown'}</div>
-                                        <div class="text-xs text-gray-500">${b.email || 'N/A'}</div>
-                                    </td>
-                                    <td class="p-4 text-gray-600">${b.tentType || 'Standard Tent'}</td>
-                                    <td class="p-4 text-gray-600">${checkIn}</td>
-                                    <td class="p-4">
-                                        <span class="px-3 py-1 rounded-full text-xs font-bold ${statusColor}">
-                                            ${statusText}
-                                        </span>
-                                    </td>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="p-4"><div class="font-bold text-gray-800 text-sm">${b.name || 'Unknown'}</div></td>
+                                    <td class="p-4 text-gray-600 text-sm">${b.tentType || 'Standard Tent'}</td>
+                                    <td class="p-4 text-gray-600 text-sm">${checkIn}</td>
+                                    <td class="p-4"><span class="px-2 py-1 rounded-full text-xs font-bold ${statusColor}">${statusText}</span></td>
                                 </tr>
                             `;
                         });
                     }
                 }
 
-                // 2. Fetch Rooms Data for "Total Tents" Card
+                // Fetch Rooms
                 const roomRes = await fetch('/api/rooms');
                 if (roomRes.ok) {
                     const rooms = await roomRes.json();
                     document.getElementById('totalTents').innerText = rooms.length;
                 }
 
+                // Fetch Messages
+                const msgRes = await fetch('/api/messages');
+                if (msgRes.ok) {
+                    const messages = await msgRes.json();
+                    document.getElementById('totalMessages').innerText = messages.length;
+                }
+
             } catch (error) {
-                console.error("Dashboard error:", error);
                 document.getElementById('recentBookingsList').innerHTML = '<tr><td colspan="4" class="p-6 text-center text-red-500">Error loading dashboard data.</td></tr>';
             }
         }
 
-        // Load data when page loads
         document.addEventListener('DOMContentLoaded', loadDashboardData);
     </script>
 </body>

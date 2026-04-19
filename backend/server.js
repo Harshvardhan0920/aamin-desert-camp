@@ -213,24 +213,21 @@ app.delete('/api/gallery/:id', async (req, res) => {
 // ==========================================
 
 // 1. Saare messages fetch karna
-app.get('/api/messages', async (req, res) => {
+// Update (Edit) Message
+app.put('/api/messages/:id', async (req, res) => {
     try {
-        const messages = await ContactModel.find().sort({ date: -1 }); // Newest first
-        res.status(200).json(messages);
+        const { name, email, subject, message } = req.body;
+        const updatedMsg = await ContactModel.findByIdAndUpdate(
+            req.params.id, 
+            { name, email, subject, message }, 
+            { new: true }
+        );
+        res.status(200).json({ message: "Message updated!", data: updatedMsg });
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch messages" });
+        res.status(500).json({ error: "Failed to update message" });
     }
 });
-
-// 2. Message delete karna
-app.delete('/api/messages/:id', async (req, res) => {
-    try {
-        await ContactModel.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: "Message deleted!" });
-    } catch (error) {
-        res.status(500).json({ error: "Failed to delete message" });
-    }
-});// 6. DYNAMIC DASHBOARD STATS (Smart Logic)
+// 6. DYNAMIC DASHBOARD STATS (Smart Logic)
 app.get('/api/stats', async (req, res) => {
     try {
         const totalBookingsCount = await Booking.countDocuments();

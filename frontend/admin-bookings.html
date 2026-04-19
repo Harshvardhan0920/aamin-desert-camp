@@ -6,70 +6,126 @@
     <title>Manage Bookings | Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <script>
+        if (localStorage.getItem('adminAuth') !== 'true') {
+            alert("Direct access denied! Please login first.");
+            window.location.href = 'admin-login.html';
+        }
+    </script>
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 flex h-screen overflow-hidden">
 
-    <aside class="w-64 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 relative">
+    <div class="md:hidden flex justify-between items-center bg-white p-4 shadow-md absolute w-full z-30">
+        <div class="text-lg font-extrabold text-yellow-700 flex items-center gap-2">
+            <i class="fa-solid fa-campground"></i> Aamin Admin
+        </div>
+        <button id="mobileMenuBtn" class="text-2xl text-gray-700 focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <div id="mobileSidebar" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden">
+        <aside class="w-64 bg-white shadow-xl flex flex-col h-full transform transition-transform">
+            <div class="p-4 flex justify-end border-b border-gray-100">
+                <button id="closeMenuBtn" class="text-2xl text-gray-500 hover:text-red-500 transition">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 mt-4 overflow-y-auto">
+                <a href="index.html" class="flex items-center gap-3 px-4 py-3 mb-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 font-bold">
+                    <i class="fa-solid fa-globe w-5"></i> View Website
+                </a>
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-chart-line w-5"></i> Dashboard
+                </a>
+                <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white font-bold shadow-md">
+                    <i class="fa-solid fa-calendar-check w-5"></i> Bookings
+                </a>
+                <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-bed w-5"></i> Manage Rooms
+                </a>
+                <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-images w-5"></i> Gallery Edit
+                </a>
+                <a href="admin-reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-star w-5"></i> Manage Reviews
+                </a>
+                <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
+                    <i class="fa-solid fa-envelope w-5"></i> Messages
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-100">
+                <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition">
+                    <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    <aside class="w-64 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 relative border-r border-gray-100">
         <div class="p-6 text-xl font-extrabold text-yellow-700 flex items-center gap-3 border-b border-gray-100">
             <i class="fa-solid fa-campground text-2xl"></i>
             Aamin Admin
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6 overflow-y-auto">
-            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="index.html" class="flex items-center gap-3 px-4 py-3 mb-4 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-600 hover:text-white transition font-bold shadow-sm">
+                <i class="fa-solid fa-globe w-5"></i> View Website
+            </a>
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-chart-line w-5"></i> Dashboard
             </a>
-            
             <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white shadow-md font-bold">
                 <i class="fa-solid fa-calendar-check w-5"></i> Bookings
             </a>
-
-            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-bed w-5"></i> Manage Rooms
             </a>
-
-            <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-images w-5"></i> Gallery Edit
             </a>
-
-            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 hover:text-yellow-700 transition font-semibold">
+            <a href="admin-reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
+                <i class="fa-solid fa-star w-5"></i> Manage Reviews
+            </a>
+            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
                 <i class="fa-solid fa-envelope w-5"></i> Messages
             </a>
         </nav>
 
         <div class="p-4 border-t border-gray-100 mt-auto">
-            <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition cursor-pointer">
+            <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition">
                 <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
-            </a>
+            </button>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50">
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50 pt-16 md:pt-0">
         
-        <header class="bg-white shadow-sm px-8 py-5 flex justify-between items-center sticky top-0 z-10">
-            <h2 class="text-2xl font-bold text-gray-800">Manage Bookings</h2>
+        <header class="bg-white shadow-sm px-4 md:px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-800">Manage Bookings</h2>
             <div class="flex items-center gap-4">
-                <span class="text-gray-600 font-medium">Hello, Admin</span>
-                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold shadow-md">
-                    A
-                </div>
+                <span class="text-gray-600 font-medium hidden sm:block">Hello, Admin</span>
+                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold shadow-md">A</div>
             </div>
         </header>
 
-        <div class="p-8 flex-1 overflow-y-auto">
-            
+        <div class="p-4 md:p-8 flex-1 overflow-y-auto">
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                    <h3 class="text-xl font-bold text-gray-800">All Reservations</h3>
-                    <button onclick="loadBookings()" class="text-gray-500 hover:text-yellow-600 transition">
+                
+                <div class="p-4 md:p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800">All Reservations</h3>
+                    <button onclick="loadBookings()" class="text-gray-500 hover:text-yellow-600 transition text-sm md:text-base">
                         <i class="fa-solid fa-rotate-right"></i> Refresh
                     </button>
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
                         <thead>
-                            <tr class="bg-gray-50 text-gray-500 text-sm uppercase tracking-wider">
+                            <tr class="bg-gray-50 text-gray-500 text-xs md:text-sm uppercase tracking-wider">
                                 <th class="p-4 font-semibold">Guest Info</th>
                                 <th class="p-4 font-semibold">Tent / Dates</th>
                                 <th class="p-4 font-semibold">Status</th>
@@ -78,17 +134,37 @@
                         </thead>
                         <tbody id="bookingsList" class="divide-y divide-gray-100">
                             <tr>
-                                <td colspan="4" class="p-8 text-center text-gray-500">Loading bookings...</td>
+                                <td colspan="4" class="p-8 text-center text-gray-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Loading bookings...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     </main>
 
     <script>
-        // 1. Fetch and Display Bookings
+        // --- Mobile Menu Toggle Logic ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileSidebar.classList.remove('hidden');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileSidebar.classList.add('hidden');
+        });
+
+        // --- Logout Functionality ---
+        function logoutAdmin() {
+            localStorage.removeItem('adminAuth'); // Token remove karo
+            window.location.href = 'index.html'; // Home page par bhej do
+        }
+
+        // --- Fetch and Display Bookings ---
         async function loadBookings() {
             const tableBody = document.getElementById('bookingsList');
             tableBody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Loading...</td></tr>';
@@ -113,27 +189,25 @@
                 bookings.forEach(booking => {
                     const bookingId = booking._id || booking.id;
                     
-                    // Status Badge Colors
-                    let statusColor = 'bg-yellow-100 text-yellow-700'; // Default Pending
+                    let statusColor = 'bg-yellow-100 text-yellow-700'; 
                     let currentStatus = booking.status || 'Pending';
                     if (currentStatus === 'Confirmed') statusColor = 'bg-green-100 text-green-700';
                     if (currentStatus === 'Cancelled') statusColor = 'bg-red-100 text-red-700';
 
-                    // Format Dates safely
                     const checkIn = new Date(booking.checkInDate).toLocaleDateString() || 'N/A';
                     const checkOut = new Date(booking.checkOutDate).toLocaleDateString() || 'N/A';
 
                     tableBody.innerHTML += `
                         <tr class="hover:bg-gray-50 transition">
                             <td class="p-4">
-                                <div class="font-bold text-gray-800">${booking.name || 'Unknown User'}</div>
-                                <div class="text-sm text-gray-500">${booking.email || 'N/A'}</div>
-                                <div class="text-sm text-gray-500"><i class="fa-solid fa-phone text-xs"></i> ${booking.phone || 'N/A'}</div>
+                                <div class="font-bold text-gray-800 text-sm md:text-base">${booking.name || 'Unknown User'}</div>
+                                <div class="text-xs md:text-sm text-gray-500">${booking.email || 'N/A'}</div>
+                                <div class="text-xs md:text-sm text-gray-500 mt-1"><i class="fa-solid fa-phone"></i> ${booking.phone || 'N/A'}</div>
                             </td>
                             <td class="p-4">
-                                <div class="font-bold text-gray-800">${booking.tentType || 'Standard Tent'}</div>
-                                <div class="text-sm text-gray-500">${checkIn} to ${checkOut}</div>
-                                <div class="text-sm text-gray-500">${booking.guests || 1} Guests</div>
+                                <div class="font-bold text-gray-800 text-sm md:text-base">${booking.tentType || 'Standard Tent'}</div>
+                                <div class="text-xs md:text-sm text-gray-500">${checkIn} to ${checkOut}</div>
+                                <div class="text-xs md:text-sm text-gray-500">${booking.guests || 1} Guests</div>
                             </td>
                             <td class="p-4">
                                 <span class="px-3 py-1 rounded-full text-xs font-bold ${statusColor}">
@@ -142,13 +216,13 @@
                             </td>
                             <td class="p-4 text-center">
                                 <div class="flex flex-col gap-2 justify-center items-center">
-                                    <select onchange="updateStatus('${bookingId}', this.value)" class="text-sm border border-gray-300 rounded p-1 outline-none focus:border-yellow-500 cursor-pointer">
+                                    <select onchange="updateStatus('${bookingId}', this.value)" class="text-xs md:text-sm border border-gray-300 rounded p-1 md:p-1.5 outline-none focus:border-yellow-500 cursor-pointer bg-white w-full max-w-[130px]">
                                         <option value="" disabled selected>Change Status</option>
                                         <option value="Confirmed">Mark Confirmed</option>
                                         <option value="Pending">Mark Pending</option>
                                         <option value="Cancelled">Mark Cancelled</option>
                                     </select>
-                                    <button onclick="deleteBooking('${bookingId}')" class="text-red-500 hover:text-red-700 text-sm font-semibold transition">
+                                    <button onclick="deleteBooking('${bookingId}')" class="text-red-500 hover:text-red-700 text-xs md:text-sm font-semibold transition mt-1">
                                         <i class="fa-solid fa-trash"></i> Delete
                                     </button>
                                 </div>
@@ -161,10 +235,9 @@
             }
         }
 
-        // 2. Update Booking Status
+        // --- Update Booking Status ---
         async function updateStatus(id, newStatus) {
             if(!newStatus) return;
-            
             try {
                 const res = await fetch(`/api/bookings/${id}/status`, {
                     method: 'PUT',
@@ -173,7 +246,7 @@
                 });
 
                 if (res.ok) {
-                    loadBookings(); // Refresh table to show new color
+                    loadBookings(); 
                 } else {
                     alert("Failed to update status");
                 }
@@ -182,14 +255,13 @@
             }
         }
 
-        // 3. Delete Booking
+        // --- Delete Booking ---
         async function deleteBooking(id) {
             if (!confirm("Are you sure you want to permanently delete this booking?")) return;
-
             try {
                 const res = await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
                 if (res.ok) {
-                    loadBookings(); // Refresh table
+                    loadBookings(); 
                 } else {
                     alert("Failed to delete booking.");
                 }
@@ -198,7 +270,7 @@
             }
         }
 
-        // Run on page load
+        // Load data automatically
         document.addEventListener('DOMContentLoaded', loadBookings);
     </script>
 </body>
