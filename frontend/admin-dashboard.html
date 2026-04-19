@@ -175,43 +175,67 @@
     </main>
 
     <script>
-        // --- Mobile Menu Toggle Logic ---
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const closeMenuBtn = document.getElementById('closeMenuBtn');
         const mobileSidebar = document.getElementById('mobileSidebar');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileSidebar.classList.remove('hidden');
-        });
+        mobileMenuBtn.addEventListener('click', () => { mobileSidebar.classList.remove('hidden'); });
+        closeMenuBtn.addEventListener('click', () => { mobileSidebar.classList.add('hidden'); });
 
-        closeMenuBtn.addEventListener('click', () => {
-            mobileSidebar.classList.add('hidden');
-        });
-
-        // --- Logout Logic ---
         function logoutAdmin() {
             localStorage.removeItem('adminAuth');
             window.location.href = 'index.html';
         }
 
-        // --- Fetch Dashboard Stats ---
+        // --- FETCH DASHBOARD STATS (UPDATED WITH DYNAMIC PRICE) ---
         async function loadDashboardData() {
             try {
-                // Fetch Bookings
+                // 1. Fetch Rooms to get their prices
+                const roomRes = await fetch('/api/rooms');
+                let rooms = [];
+                if (roomRes.ok) {
+                    rooms = await roomRes.json();
+                    document.getElementById('totalTents').innerText = rooms.length;
+                }
+
+                // 2. Fetch Bookings and Calculate Revenue
                 const bookingRes = await fetch('/api/bookings');
                 if (bookingRes.ok) {
                     const bookings = await bookingRes.json();
                     document.getElementById('totalBookings').innerText = bookings.length;
 
-                    // Revenue Calc
-                    let estimatedRevenue = bookings.length * 5000;
+                    // Revenue Calculation Setup
+                    let estimatedRevenue = 0;
+                    
+                    bookings.forEach(b => {
+                        // Find the specific room the user booked
+                        let bookedRoom = rooms.find(r => r.name === b.tentType);
+                        
+                        // Get its actual price (fallback to 0 if deleted)
+                        let roomPrice = bookedRoom ? Number(bookedRoom.price) : 0;
+                        
+                        // Calculate number of nights stayed
+                        let days = 1;
+                        if (b.checkInDate && b.checkOutDate) {
+                            const inDate = new Date(b.checkInDate);
+                            const outDate = new Date(b.checkOutDate);
+                            const diffTime = Math.abs(outDate - inDate);
+                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                            if (diffDays > 0) days = diffDays;
+                        }
+                        
+                        // Add to total
+                        estimatedRevenue += (roomPrice * days);
+                    });
+
+                    // Format Revenue
                     if (estimatedRevenue >= 100000) {
-                        document.getElementById('totalRevenue').innerText = '₹' + (estimatedRevenue / 100000).toFixed(1) + 'L';
+                        document.getElementById('totalRevenue').innerText = '₹' + (estimatedRevenue / 100000).toFixed(2) + 'L';
                     } else {
                         document.getElementById('totalRevenue').innerText = '₹' + estimatedRevenue.toLocaleString();
                     }
 
-                    // Table
+                    // Populate Table
                     const tableBody = document.getElementById('recentBookingsList');
                     tableBody.innerHTML = '';
                     if (bookings.length === 0) {
@@ -236,14 +260,7 @@
                     }
                 }
 
-                // Fetch Rooms
-                const roomRes = await fetch('/api/rooms');
-                if (roomRes.ok) {
-                    const rooms = await roomRes.json();
-                    document.getElementById('totalTents').innerText = rooms.length;
-                }
-
-                // Fetch Messages
+                // 3. Fetch Messages
                 const msgRes = await fetch('/api/messages');
                 if (msgRes.ok) {
                     const messages = await msgRes.json();

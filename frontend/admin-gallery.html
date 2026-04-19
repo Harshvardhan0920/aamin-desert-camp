@@ -119,7 +119,6 @@
                     <h3 class="text-lg md:text-xl font-bold mb-4 md:mb-6 text-gray-800 border-b pb-3">Upload New Photo</h3>
                     
                     <form id="galleryForm" class="space-y-4 md:space-y-5">
-                        
                         <div>
                             <label class="block text-sm font-semibold text-gray-600 mb-2">Select Image File</label>
                             <input type="file" id="imageFile" accept="image/*" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-xl outline-none transition cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 text-sm">
@@ -152,43 +151,33 @@
     </main>
 
     <script>
-        // --- Mobile Menu Toggle Logic ---
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const closeMenuBtn = document.getElementById('closeMenuBtn');
         const mobileSidebar = document.getElementById('mobileSidebar');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileSidebar.classList.remove('hidden');
-        });
+        mobileMenuBtn.addEventListener('click', () => { mobileSidebar.classList.remove('hidden'); });
+        closeMenuBtn.addEventListener('click', () => { mobileSidebar.classList.add('hidden'); });
 
-        closeMenuBtn.addEventListener('click', () => {
-            mobileSidebar.classList.add('hidden');
-        });
-
-        // --- Logout Function ---
         function logoutAdmin() {
             localStorage.removeItem('adminAuth');
             window.location.href = 'index.html';
         }
 
-        let base64String = "";
-
-        // 1. Image Preview & Base64 Conversion
+        // Image Preview
         document.getElementById('imageFile').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onloadend = function() {
-                base64String = reader.result;
                 const preview = document.getElementById('imagePreview');
-                preview.src = base64String;
+                preview.src = reader.result;
                 document.getElementById('previewContainer').classList.remove('hidden');
             }
             reader.readAsDataURL(file);
         });
 
-        // 2. Fetch and Display Gallery
+        // Load Gallery
         async function loadGallery() {
             const container = document.getElementById('galleryList');
             container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading...</p>';
@@ -196,7 +185,6 @@
             try {
                 const res = await fetch('/api/gallery');
                 const photos = await res.json();
-
                 container.innerHTML = '';
                 if (!Array.isArray(photos) || photos.length === 0) {
                     container.innerHTML = `<p class="text-gray-500 col-span-full text-center py-8">No photos found. Upload your first photo!</p>`;
@@ -205,12 +193,9 @@
 
                 photos.forEach(photo => {
                     const photoId = photo._id || photo.id; 
-                    
-                    // SIRF DELETE BUTTON HAI, EDIT HATA DIYA HAI
                     container.innerHTML += `
                         <div class="relative group rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-gray-100 h-40 md:h-48">
                             <img src="${photo.image}" class="w-full h-full object-cover">
-                            
                             <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition duration-300">
                                 <button onclick="deletePhoto('${photoId}')" class="bg-red-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-700 transition shadow-lg flex items-center gap-2">
                                     <i class="fa-solid fa-trash"></i> Delete
@@ -224,17 +209,22 @@
             }
         }
 
-        // 3. Upload New Photo (NO EDIT)
+        // 🛑 FIXED: FORM DATA UPLOAD LOGIC 🛑
         document.getElementById('galleryForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const msgBox = document.getElementById('msg');
             const submitBtn = document.getElementById('submitBtn');
+            const fileInput = document.getElementById('imageFile');
 
-            if(!base64String) {
+            if(fileInput.files.length === 0) {
                 msgBox.textContent = "Please select an image file first!";
                 msgBox.className = "mt-4 text-center font-bold text-red-700 bg-red-100 p-2 rounded-xl text-sm";
                 return;
             }
+
+            // Ab Data File ke roop me bhej rahe hain
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
 
             try {
                 submitBtn.disabled = true;
@@ -242,20 +232,15 @@
 
                 const res = await fetch('/api/gallery', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ image: base64String })
+                    body: formData // Note: Content-Type header browser khud set karega FormData ke liye
                 });
 
                 if (res.ok) {
                     msgBox.textContent = "Photo Uploaded Successfully!";
                     msgBox.className = "mt-4 text-center font-bold text-green-700 bg-green-100 p-2 rounded-xl text-sm";
                     
-                    // Form reset karo
                     document.getElementById('galleryForm').reset();
                     document.getElementById('previewContainer').classList.add('hidden');
-                    base64String = "";
-                    
-                    // List refresh karo
                     loadGallery(); 
                     
                     setTimeout(() => msgBox.textContent = '', 3000);
@@ -271,10 +256,8 @@
             }
         });
 
-        // 4. Delete Photo Logic
         async function deletePhoto(id) {
             if (!confirm("Are you sure you want to permanently delete this photo?")) return;
-
             try {
                 const res = await fetch(`/api/gallery/${id}`, { method: 'DELETE' });
                 if (res.ok) {
@@ -287,7 +270,6 @@
             }
         }
 
-        // Run on start
         document.addEventListener('DOMContentLoaded', loadGallery);
     </script>
 </body>
