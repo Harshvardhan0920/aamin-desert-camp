@@ -81,18 +81,26 @@ const Message = mongoose.model('Message', messageSchema);
 // ==========================================
 
 // 1. ADD ROOM (With Photo Upload)
-app.post('/api/rooms', upload.single('imageFile'), async (req, res) => {
+// Rooms add karne ka API route
+// 1. UPDATE (Edit) Room
+app.put('/api/rooms/:id', async (req, res) => {
     try {
-        const roomData = req.body;
-        // Agar photo upload hui hai, toh uska server wala link save karo
-        if (req.file) {
-            roomData.image = 'http://localhost:5000/uploads/' + req.file.filename;
-        }
-        const newRoom = new Room(roomData);
-        await newRoom.save();
-        res.status(201).json({ message: "Room added successfully!" });
+        const updatedRoom = await Room.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(200).json({ message: "Room updated successfully!", room: updatedRoom });
     } catch (error) {
-        res.status(500).json({ message: "Error saving room", error });
+        console.error("Error updating room:", error);
+        res.status(500).json({ error: "Failed to update room" });
+    }
+});
+
+// 2. DELETE Room
+app.delete('/api/rooms/:id', async (req, res) => {
+    try {
+        await Room.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "Room deleted successfully!" });
+    } catch (error) {
+        console.error("Error deleting room:", error);
+        res.status(500).json({ error: "Failed to delete room" });
     }
 });
 
@@ -103,10 +111,10 @@ app.get('/api/rooms', async (req, res) => {
 });
 
 // 3. DELETE ROOM
-app.delete('/api/rooms/:id', async (req, res) => {
+/*app.delete('/api/rooms/:id', async (req, res) => {
     await Room.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Room deleted!" });
-});
+});*/
 
 // 4. BOOKINGS APIs
 app.post('/api/bookings', async (req, res) => {

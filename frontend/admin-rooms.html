@@ -3,180 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Rooms | Admin Dashboard</title>
+    <title>Manage Rooms | Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-    // Agar login nahi hai, toh login page par bhej do
-    if (!localStorage.getItem('isAdmin')) {
-        window.location.href = 'admin-login.html';
-    }
-</script>
-    <style>
-        .sidebar-active { background-color: #ca8a04; color: white !important; border-radius: 0.5rem; }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
-<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+<body class="bg-gray-100 font-sans min-h-screen">
 
-    <aside class="w-64 bg-white shadow-xl hidden md:flex flex-col flex-shrink-0 h-full relative z-20">
-        <div class="h-20 flex items-center px-6 border-b border-gray-100 bg-yellow-50">
-            <a href="index.html" class="text-xl font-bold text-yellow-700 flex items-center">
-                <i class="fa-solid fa-campground mr-2"></i>Aamin Admin
-            </a>
+    <nav class="bg-gray-900 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold"><i class="fa-solid fa-gear"></i> Admin Dashboard</h1>
+            <a href="index.html" class="text-yellow-400 hover:text-yellow-300"><i class="fa-solid fa-globe"></i> View Website</a>
         </div>
-        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-            <a href="admin-dashboard.html" class="sidebar-active flex items-center px-4 py-3 font-medium transition shadow-md">
-                <i class="fa-solid fa-chart-line w-6 text-center mr-3"></i>Dashboard
-            </a>
-            <a href="admin-bookings.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-calendar-check w-6 text-center mr-3"></i>Bookings
-            </a>
-            <a href="admin-rooms.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-bed w-6 text-center mr-3"></i>Manage Rooms
-            </a>
-            <a href="admin-reviews.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-star w-6 text-center mr-3"></i>Reviews Edit
-            </a>
-            <a href="admin-gallery.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-images w-6 text-center mr-3"></i>Gallery Edit
-            </a>
-            <a href="admin-messages.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-yellow-600 rounded-lg font-medium transition">
-                <i class="fa-solid fa-envelope w-6 text-center mr-3"></i>Messages
-            </a>
-        </nav>
-        <div class="p-4 border-t border-gray-100">
-            <a href="#" onclick="localStorage.removeItem('isAdmin'); window.location.href='admin-login.html';" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg font-bold transition">
-    <i class="fa-solid fa-right-from-bracket w-6 text-center mr-3"></i>Logout
-</a>
-        </div>
-    </aside>
+    </nav>
 
-    <div class="flex-1 flex flex-col h-full relative overflow-hidden">
-        <header class="h-20 bg-white shadow-sm flex items-center px-6 lg:px-10 z-10 justify-between">
-            <h1 class="text-2xl font-bold text-gray-800">Manage Tents & Rooms</h1>
-        </header>
-
-        <main class="flex-1 overflow-y-auto p-6 lg:p-10 pb-20">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="container mx-auto p-4 md:p-8 flex flex-col lg:flex-row gap-8">
+        
+        <div class="w-full lg:w-1/3">
+            <div class="bg-white p-6 rounded-xl shadow-lg sticky top-6">
+                <h2 id="formTitle" class="text-2xl font-bold mb-6 text-gray-800">Add New Room</h2>
                 
-                <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-fit">
-                    <h2 class="text-lg font-bold text-gray-800 border-b border-gray-100 pb-4 mb-6">Add New Tent</h2>
-                    <form id="addRoomForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm text-gray-600 font-bold mb-2">Tent Name</label>
-                            <input type="text" id="roomName" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-yellow-500" placeholder="e.g. Royal Swiss Tent">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-600 font-bold mb-2">Price per Night (₹)</label>
-                            <input type="number" id="roomPrice" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-yellow-500" placeholder="e.g. 4500">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-600 font-bold mb-2">Description</label>
-                            <textarea id="roomDesc" rows="3" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-yellow-500" placeholder="Describe the tent..."></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-600 font-bold mb-2">Upload Photo</label>
-                            <input type="file" id="roomImageFile" accept="image/*" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-yellow-500 bg-gray-50">
-                        </div>
-                        <button type="submit" id="saveTentBtn" class="w-full bg-yellow-600 text-white font-bold py-3 rounded-lg hover:bg-yellow-700 transition mt-4 flex justify-center items-center">
-                            Save Tent
-                        </button>
-                        <p id="successMessage" class="hidden text-green-600 text-sm font-bold mt-2 text-center">✅ Tent and Photo added successfully!</p>
-                    </form>
-                </div>
-
-                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <div class="flex justify-between items-center border-b border-gray-100 pb-4 mb-6">
-                        <h2 class="text-lg font-bold text-gray-800">Existing Tents</h2>
-                        <button onclick="fetchRooms()" class="text-sm bg-yellow-50 text-yellow-700 font-bold px-3 py-1 rounded border border-yellow-200 hover:bg-yellow-100"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
+                <form id="roomForm" class="space-y-4">
+                    <input type="hidden" id="roomId"> 
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Room Name</label>
+                        <input type="text" id="name" placeholder="e.g. Royal Tent" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
-                    <div id="roomsContainer" class="space-y-6">
-                        </div>
-                </div>
-
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
+                        <input type="number" id="price" placeholder="e.g. 5000" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                        <input type="url" id="image" placeholder="https://..." required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea id="description" rows="3" placeholder="Room details..." required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                    </div>
+                    
+                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white font-bold p-3 rounded-lg hover:bg-blue-700 transition">
+                        <i class="fa-solid fa-plus"></i> Add Room
+                    </button>
+                    <button type="button" id="cancelEditBtn" onclick="cancelEdit()" class="w-full bg-gray-400 text-white font-bold p-3 rounded-lg hover:bg-gray-500 transition hidden">
+                        Cancel Edit
+                    </button>
+                </form>
+                <div id="msg" class="mt-4 text-center font-bold"></div>
             </div>
-        </main>
+        </div>
+
+        <div class="w-full lg:w-2/3">
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">Existing Rooms</h2>
+                
+                <div id="roomsList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <p class="text-gray-500">Loading rooms...</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const API_URL = "http://localhost:5000/api/rooms";
+        let isEditing = false;
+        let allRooms = [];
 
-        document.getElementById('addRoomForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const btn = document.getElementById('saveTentBtn');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Uploading...';
-            btn.disabled = true;
-
-            const formData = new FormData();
-            formData.append('name', document.getElementById('roomName').value);
-            formData.append('price', document.getElementById('roomPrice').value);
-            formData.append('description', document.getElementById('roomDesc').value);
-            formData.append('status', 'Active');
-            
-            const fileInput = document.getElementById('roomImageFile');
-            formData.append('imageFile', fileInput.files[0]);
-
+        // 1. Load Rooms (READ)
+        async function loadRooms() {
+            const container = document.getElementById('roomsList');
             try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: formData 
-                });
+                const res = await fetch('/api/rooms');
+                allRooms = await res.json();
 
-                if(response.ok) {
-                    document.getElementById('successMessage').classList.remove('hidden');
-                    this.reset();
-                    fetchRooms();
-                    setTimeout(() => document.getElementById('successMessage').classList.add('hidden'), 3000);
-                }
-            } catch (error) {
-                alert("Upload failed!");
-            } finally {
-                btn.innerHTML = 'Save Tent';
-                btn.disabled = false;
-            }
-        });
-
-        async function fetchRooms() {
-            const container = document.getElementById('roomsContainer');
-            try {
-                const response = await fetch(API_URL);
-                const rooms = await response.json();
-
-                if (rooms.length === 0) {
-                    container.innerHTML = '<p class="text-gray-500 text-center py-4">No tents found.</p>';
+                container.innerHTML = '';
+                if (allRooms.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 col-span-full">No rooms found. Add one!</p>';
                     return;
                 }
 
-                container.innerHTML = '';
-                rooms.forEach(room => {
-                    const roomHTML = `
-                        <div class="flex items-center justify-between border-b border-gray-100 pb-6 mb-6">
-                            <div class="flex items-center">
-                                <img src="${room.image}" alt="Tent" class="w-24 h-20 object-cover rounded-lg shadow-sm mr-4 border">
-                                <div>
-                                    <h3 class="font-bold text-gray-900">${room.name}</h3>
-                                    <p class="text-yellow-600 font-semibold text-sm">₹${room.price} / night</p>
+                allRooms.forEach(room => {
+                    // Mongoose normally uses _id
+                    const roomId = room._id || room.id; 
+                    
+                    container.innerHTML += `
+                        <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                            <img src="${room.image}" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-bold text-lg">${room.name}</h3>
+                                <p class="text-blue-600 font-extrabold mb-2">₹${room.price}</p>
+                                <p class="text-gray-600 text-sm mb-4 line-clamp-2">${room.description}</p>
+                                
+                                <div class="flex gap-2">
+                                    <button onclick="editRoom('${roomId}')" class="flex-1 bg-yellow-500 text-white py-2 rounded font-bold hover:bg-yellow-600">
+                                        <i class="fa-solid fa-pen"></i> Edit
+                                    </button>
+                                    <button onclick="deleteRoom('${roomId}')" class="flex-1 bg-red-600 text-white py-2 rounded font-bold hover:bg-red-700">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
                                 </div>
                             </div>
-                            <button onclick="deleteRoom('${room._id}')" class="px-4 py-2 bg-red-50 text-red-600 rounded hover:bg-red-100 font-medium text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Delete</button>
                         </div>
                     `;
-                    container.innerHTML += roomHTML;
                 });
             } catch (error) {
-                container.innerHTML = '<p class="text-red-500">Error loading tents.</p>';
+                console.error(error);
+                container.innerHTML = '<p class="text-red-500">Error loading rooms.</p>';
             }
         }
 
+        // 2. Add or Update Room (CREATE / UPDATE)
+        document.getElementById('roomForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msgBox = document.getElementById('msg');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            const roomData = {
+                name: document.getElementById('name').value,
+                price: document.getElementById('price').value,
+                image: document.getElementById('image').value,
+                description: document.getElementById('description').value
+            };
+
+            const roomId = document.getElementById('roomId').value;
+
+            try {
+                let res;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+                if (isEditing) {
+                    // UPDATE Logic
+                    res = await fetch(`/api/rooms/${roomId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(roomData)
+                    });
+                } else {
+                    // CREATE Logic
+                    res = await fetch('/api/rooms', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(roomData)
+                    });
+                }
+
+                if (res.ok) {
+                    msgBox.textContent = isEditing ? "Room Updated!" : "Room Added!";
+                    msgBox.className = "mt-4 text-center font-bold text-green-600 bg-green-100 p-2 rounded";
+                    cancelEdit(); // Reset form
+                    loadRooms();  // Refresh list
+                } else {
+                    throw new Error("Server Error");
+                }
+            } catch (error) {
+                msgBox.textContent = "Error saving room!";
+                msgBox.className = "mt-4 text-center font-bold text-red-600 bg-red-100 p-2 rounded";
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = isEditing ? '<i class="fa-solid fa-save"></i> Update Room' : '<i class="fa-solid fa-plus"></i> Add Room';
+            }
+        });
+
+        // 3. Edit Room (Populate Form)
+        function editRoom(id) {
+            const room = allRooms.find(r => (r._id || r.id) === id);
+            if (!room) return;
+
+            // Form me data daalo
+            document.getElementById('roomId').value = id;
+            document.getElementById('name').value = room.name;
+            document.getElementById('price').value = room.price;
+            document.getElementById('image').value = room.image;
+            document.getElementById('description').value = room.description;
+
+            // UI change karo Update mode me
+            isEditing = true;
+            document.getElementById('formTitle').textContent = "Edit Room";
+            document.getElementById('submitBtn').innerHTML = '<i class="fa-solid fa-save"></i> Update Room';
+            document.getElementById('submitBtn').classList.replace('bg-blue-600', 'bg-green-600');
+            document.getElementById('submitBtn').classList.replace('hover:bg-blue-700', 'hover:bg-green-700');
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+            document.getElementById('msg').textContent = "";
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Cancel Edit
+        function cancelEdit() {
+            isEditing = false;
+            document.getElementById('roomForm').reset();
+            document.getElementById('roomId').value = '';
+            
+            document.getElementById('formTitle').textContent = "Add New Room";
+            document.getElementById('submitBtn').innerHTML = '<i class="fa-solid fa-plus"></i> Add Room';
+            document.getElementById('submitBtn').classList.replace('bg-green-600', 'bg-blue-600');
+            document.getElementById('submitBtn').classList.replace('hover:bg-green-700', 'hover:bg-blue-700');
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        }
+
+        // 4. Delete Room (DELETE)
         async function deleteRoom(id) {
-            if(confirm("Tent delete karein?")) {
-                await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-                fetchRooms();
+            if (!confirm("Are you sure you want to delete this room? This cannot be undone.")) return;
+
+            try {
+                const res = await fetch(`/api/rooms/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    alert("Room Deleted!");
+                    loadRooms(); // Refresh list
+                } else {
+                    alert("Failed to delete room.");
+                }
+            } catch (error) {
+                alert("Error deleting room.");
             }
         }
 
-        fetchRooms();
+        // Run on start
+        document.addEventListener('DOMContentLoaded', loadRooms);
     </script>
 </body>
 </html>
