@@ -346,6 +346,26 @@ app.post('/api/contact', async (req, res) => {
         res.status(500).json({ error: "Failed to save message." });
     }
 });
+
+// ==========================================
+// Admin Login System
+// ==========================================
+app.post('/api/admin/login', (req, res) => {
+    const { username, password } = req.body;
+
+    // Yahan tumhara ADMIN USERNAME aur PASSWORD set hai
+    // Tum isko baad mein change kar sakte ho
+    const adminUser = "admin";
+    const adminPass = "admin123"; 
+
+    if (username === adminUser && password === adminPass) {
+        // Agar password sahi hai
+        res.status(200).json({ message: "Login successful!" });
+    } else {
+        // Agar password galat hai
+        res.status(401).json({ error: "Invalid username or password!" });
+    }
+});
 // Server Start
 
 const PORT = process.env.PORT || 5000; // Render ke liye zaroori hai
