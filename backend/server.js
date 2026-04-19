@@ -330,8 +330,9 @@ app.delete('/api/reviews/:id', async (req, res) => {
         res.status(500).json({ error: "Failed to delete review" });
     }
 });// Ye code copy-paste karo
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
-
+// Data size limit ko 50MB kar do taaki badi photos aaram se upload ho sakein
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // app.get('*', (req, res) => {
 //    res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
 // });
