@@ -6,43 +6,46 @@ const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 
+// ==========================================
+// 1. APP CONFIGURATION & MIDDLEWARES
+// ==========================================
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' })); 
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Serve Static Files
+// Serve Frontend Files & Uploaded Images
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ==========================================
-// 1. DATABASE CONNECTION
+// 2. DATABASE CONNECTION (HARDCODED AS REQUESTED)
 // ==========================================
-// 🛑 IMPORTANT: Yahan apni asli MongoDB Atlas String daalna!
-const MONGO_URI = "mongodb+srv://admin:AaminDesert@cluster0.ptckt1u.mongodb.net/?appName=Cluster0"; 
+// Tumhara exact MongoDB link (Database name 'AaminDesertCamp' add kiya hai data organize karne ke liye)
+const MONGO_URI = "mongodb+srv://admin:AaminDesert@cluster0.ptckt1u.mongodb.net/AaminDesertCamp?appName=Cluster0";
 
 mongoose.connect(MONGO_URI)
-    .then(() => console.log("✅ MongoDB Connected Successfully"))
+    .then(() => console.log("✅ MongoDB Connected Successfully!"))
     .catch(err => console.error("❌ MongoDB Connection Error:", err.message));
 
 // ==========================================
-// 2. EMAIL SETUP (NODEMAILER)
+// 3. EMAIL SETUP (NODEMAILER)
 // ==========================================
-// 🛑 IMPORTANT: Apna Gmail aur App Password yahan dalo!
-const ADMIN_EMAIL = 'aamindesertcamp@gmail.com'; 
-const ADMIN_PASS = 'uwes vbql pbim gtaw';
+// Tumhari di hui Gmail aur App Password
+const ADMIN_EMAIL = 'aamindesertcamp@gmail.com';
+const APP_PASSWORD = 'uwesvbqlpbimgtaw'; // Spaces removed for technical safety
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: ADMIN_EMAIL, 
-        pass: ADMIN_PASS     
+        pass: APP_PASSWORD     
     }
 });
 
 // ==========================================
-// 3. MULTER STORAGE SETUP
+// 4. MULTER SETUP (IMAGE UPLOADS KE LIYE)
 // ==========================================
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -59,12 +62,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // ==========================================
-// 4. DATABASE MODELS
+// 5. DATABASE MODELS (SCHEMAS)
 // ==========================================
-const GalleryModel = mongoose.model('Gallery', new mongoose.Schema({ image: String }));
-const RoomModel = mongoose.model('Room', new mongoose.Schema({ name: String, price: Number, description: String, image: String }));
-const ContactModel = mongoose.model('Contact', new mongoose.Schema({ name: String, email: String, subject: String, message: String, date: { type: Date, default: Date.now } }));
-const ReviewModel = mongoose.model('Review', new mongoose.Schema({ guestName: String, comment: String, rating: Number, adminReply: String, createdAt: { type: Date, default: Date.now } }));
+const GalleryModel = mongoose.model('Gallery', new mongoose.Schema({ 
+    image: String 
+}));
+
+const RoomModel = mongoose.model('Room', new mongoose.Schema({ 
+    name: String, price: Number, description: String, image: String 
+}));
 
 const BookingModel = mongoose.model('Booking', new mongoose.Schema({ 
     name: String, email: String, phone: String, tentType: String, 
@@ -72,25 +78,49 @@ const BookingModel = mongoose.model('Booking', new mongoose.Schema({
     status: { type: String, default: 'Pending' } 
 }, { timestamps: true }));
 
+const ContactModel = mongoose.model('Contact', new mongoose.Schema({ 
+    name: String, email: String, subject: String, message: String, 
+    date: { type: Date, default: Date.now } 
+}));
+
+const ReviewModel = mongoose.model('Review', new mongoose.Schema({ 
+    guestName: String, comment: String, rating: Number, adminReply: String, 
+    createdAt: { type: Date, default: Date.now } 
+}));
+
 // ==========================================
-// 5. API ROUTES
+// 6. API ROUTES
 // ==========================================
 
+// --- ADMIN LOGIN ---
 app.post('/api/admin/login', (req, res) => {
     const { username, password } = req.body;
-    if (username === "admin" && password === "admin123") res.status(200).json({ message: "Login successful!" });
-    else res.status(401).json({ error: "Invalid credentials" });
+    if (username === "admin" && password === "admin123") {
+        res.status(200).json({ message: "Login successful!" });
+    } else {
+        res.status(401).json({ error: "Invalid credentials" });
+    }
 });
 
+// --- STATS API (For booking.html inventory check) ---
 app.get('/api/stats', async (req, res) => {
     try {
         const confirmedBookings = await BookingModel.countDocuments({ status: 'Confirmed' });
-        res.json({ availableTents: Math.max(0, 15 - confirmedBookings) });
-    } catch (e) { res.status(500).json({ error: "Server Error", availableTents: 5 }); }
+        let totalTentsAvailable = 15 - confirmedBookings; // Base inventory is 15 tents
+        res.json({ availableTents: Math.max(0, totalTentsAvailable) });
+    } catch (e) { 
+        res.status(500).json({ error: "Server Error", availableTents: 5 }); 
+    }
 });
 
-// --- GALLERY ---
-app.get('/api/gallery', async (req, res) => res.json(await GalleryModel.find().sort({_id: -1})));
+// --- GALLERY API ---
+app.get('/api/gallery', async (req, res) => {
+    try {
+        const photos = await GalleryModel.find().sort({_id: -1});
+        res.json(photos);
+    } catch(e) { res.status(500).json({ error: "Error" }); }
+});
+
 app.post('/api/gallery', upload.single('image'), async (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ error: "No file uploaded" });
@@ -98,6 +128,7 @@ app.post('/api/gallery', upload.single('image'), async (req, res) => {
         res.status(201).json({ message: "Photo added" });
     } catch (e) { res.status(500).json({ error: "Upload failed" }); }
 });
+
 app.delete('/api/gallery/:id', async (req, res) => {
     try {
         const photo = await GalleryModel.findByIdAndDelete(req.params.id);
@@ -109,8 +140,9 @@ app.delete('/api/gallery/:id', async (req, res) => {
     } catch (e) { res.status(500).json({ error: "Delete failed" }); }
 });
 
-// --- ROOMS ---
+// --- ROOMS API ---
 app.get('/api/rooms', async (req, res) => res.json(await RoomModel.find().sort({_id: -1})));
+
 app.post('/api/rooms', upload.single('image'), async (req, res) => {
     try {
         const { name, price, description } = req.body;
@@ -119,6 +151,7 @@ app.post('/api/rooms', upload.single('image'), async (req, res) => {
         res.status(201).json({ message: "Room added" });
     } catch (e) { res.status(500).json({ error: "Error adding room" }); }
 });
+
 app.put('/api/rooms/:id', upload.single('image'), async (req, res) => {
     try {
         let updateData = { name: req.body.name, price: req.body.price, description: req.body.description };
@@ -127,6 +160,7 @@ app.put('/api/rooms/:id', upload.single('image'), async (req, res) => {
         res.json({ message: "Updated" });
     } catch (e) { res.status(500).json({ error: "Update failed" }); }
 });
+
 app.delete('/api/rooms/:id', async (req, res) => {
     try {
         const room = await RoomModel.findByIdAndDelete(req.params.id);
@@ -138,10 +172,14 @@ app.delete('/api/rooms/:id', async (req, res) => {
     } catch (e) { res.status(500).json({ error: "Delete failed" }); }
 });
 
-// --- BOOKINGS (WITH EMAIL NOTIFICATIONS TO ADMIN) ---
+// --- BOOKINGS API (With Email Notifications) ---
 app.get('/api/bookings', async (req, res) => res.json(await BookingModel.find().sort({createdAt: -1})));
+
 app.post('/api/bookings', async (req, res) => {
     try {
+        const adults = parseInt(req.body.adults) || 0;
+        const children = parseInt(req.body.children) || 0;
+        
         const bookingData = {
             name: req.body.guestName,
             email: req.body.email,
@@ -149,17 +187,28 @@ app.post('/api/bookings', async (req, res) => {
             tentType: req.body.roomType,
             checkInDate: req.body.checkIn,
             checkOutDate: req.body.checkOut,
-            guests: parseInt(req.body.adults || 0) + parseInt(req.body.children || 0),
+            guests: adults + children,
             status: 'Pending'
         };
         await BookingModel.create(bookingData);
 
-        // 1. Email to Admin (Notification for you!)
+        // 1. Email to Admin (Aamin Desert Camp)
         const adminMailOptions = {
-            from: `"Desert Camp System" <${ADMIN_EMAIL}>`,
-            to: ADMIN_EMAIL, 
-            subject: `🚨 New Booking Alert: ${bookingData.name}`,
-            text: `Hello Admin,\n\nYou have a new booking request!\n\nDetails:\nName: ${bookingData.name}\nPhone: ${bookingData.phone}\nEmail: ${bookingData.email}\nTent: ${bookingData.tentType}\nDates: ${bookingData.checkInDate} to ${bookingData.checkOutDate}\nGuests: ${bookingData.guests}\n\nPlease check the admin dashboard to confirm.`
+            from: `"Aamin Camp Portal" <${ADMIN_EMAIL}>`,
+            to: ADMIN_EMAIL,
+            subject: `🚨 NEW BOOKING: ${bookingData.name} - ${bookingData.tentType}`,
+            html: `
+                <h3>New Booking Request Received</h3>
+                <p><b>Name:</b> ${bookingData.name}</p>
+                <p><b>Phone:</b> ${bookingData.phone}</p>
+                <p><b>Email:</b> ${bookingData.email}</p>
+                <p><b>Tent Type:</b> ${bookingData.tentType}</p>
+                <p><b>Check-In:</b> ${bookingData.checkInDate}</p>
+                <p><b>Check-Out:</b> ${bookingData.checkOutDate}</p>
+                <p><b>Total Guests:</b> ${bookingData.guests}</p>
+                <br>
+                <p>Please login to the Admin Dashboard to confirm this booking.</p>
+            `
         };
 
         // 2. Email to Customer
@@ -167,75 +216,109 @@ app.post('/api/bookings', async (req, res) => {
             from: `"Aamin Desert Camp" <${ADMIN_EMAIL}>`,
             to: bookingData.email,
             subject: '🏕️ Booking Received - Aamin Desert Camp',
-            text: `Hello ${bookingData.name},\n\nWe have received your booking request for the ${bookingData.tentType} from ${bookingData.checkInDate} to ${bookingData.checkOutDate}.\n\nOur team will review and confirm shortly.\n\nWarm Regards,\nAamin Desert Camp`
+            html: `
+                <h3>Dear ${bookingData.name},</h3>
+                <p>Thank you for choosing Aamin Desert Camp!</p>
+                <p>We have successfully received your booking request for the <b>${bookingData.tentType}</b> from <b>${bookingData.checkInDate}</b> to <b>${bookingData.checkOutDate}</b>.</p>
+                <p>Our team is reviewing your request and will contact you shortly on ${bookingData.phone} to confirm your reservation.</p>
+                <br>
+                <p>Warm Regards,<br><b>Aamin Desert Camp Team</b><br>+91 9352918751</p>
+            `
         };
 
-        // Send both emails
-        transporter.sendMail(adminMailOptions, (error) => { if(error) console.log("Admin Email Failed:", error.message); });
-        transporter.sendMail(customerMailOptions, (error) => { if(error) console.log("Customer Email Failed:", error.message); });
+        transporter.sendMail(adminMailOptions).catch(err => console.log("Admin email failed:", err));
+        transporter.sendMail(customerMailOptions).catch(err => console.log("Customer email failed:", err));
 
         res.status(201).json({ message: "Booking saved" });
     } catch (e) { res.status(500).json({ error: "Save failed" }); }
 });
+
 app.put('/api/bookings/:id/status', async (req, res) => {
-    await BookingModel.findByIdAndUpdate(req.params.id, { status: req.body.status });
-    res.json({ message: "Status updated" });
-});
-app.delete('/api/bookings/:id', async (req, res) => {
-    await BookingModel.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted" });
+    try {
+        await BookingModel.findByIdAndUpdate(req.params.id, { status: req.body.status });
+        res.json({ message: "Status updated" });
+    } catch (e) { res.status(500).json({ error: "Update failed" }); }
 });
 
-// --- CONTACT / MESSAGES ---
+app.delete('/api/bookings/:id', async (req, res) => {
+    try {
+        await BookingModel.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted" });
+    } catch (e) { res.status(500).json({ error: "Delete failed" }); }
+});
+
+// --- CONTACT / MESSAGES API (With Email) ---
 app.post('/api/contact', async (req, res) => {
     try {
         await ContactModel.create(req.body);
         
-        // Notify Admin of new message
-        const msgMail = {
-            from: `"Website Contact" <${ADMIN_EMAIL}>`,
+        // Notify Admin
+        const msgMailOptions = {
+            from: `"Website Query" <${ADMIN_EMAIL}>`,
             to: ADMIN_EMAIL,
             subject: `✉️ New Message from ${req.body.name}`,
-            text: `Name: ${req.body.name}\nEmail: ${req.body.email}\nSubject: ${req.body.subject}\nMessage:\n${req.body.message}`
+            text: `Name: ${req.body.name}\nEmail: ${req.body.email}\nSubject: ${req.body.subject}\n\nMessage:\n${req.body.message}`
         };
-        transporter.sendMail(msgMail);
+        transporter.sendMail(msgMailOptions).catch(err => console.log("Contact email failed:", err));
 
         res.status(201).json({ message: "Message sent" });
     } catch (e) { res.status(500).json({ error: "Error sending message" }); }
 });
+
 app.get('/api/messages', async (req, res) => res.json(await ContactModel.find().sort({date: -1})));
 app.put('/api/messages/:id', async (req, res) => {
-    await ContactModel.findByIdAndUpdate(req.params.id, req.body);
-    res.json({ message: "Updated" });
+    try {
+        await ContactModel.findByIdAndUpdate(req.params.id, req.body);
+        res.json({ message: "Updated" });
+    } catch (e) { res.status(500).json({ error: "Update failed" }); }
 });
 app.delete('/api/messages/:id', async (req, res) => {
-    await ContactModel.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted" });
+    try {
+        await ContactModel.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted" });
+    } catch (e) { res.status(500).json({ error: "Delete failed" }); }
 });
 
-// --- REVIEWS ---
+// --- REVIEWS API ---
 app.get('/api/reviews', async (req, res) => res.json(await ReviewModel.find().sort({createdAt: -1})));
+
 app.post('/api/reviews', async (req, res) => {
     try {
-        const revData = { guestName: req.body.name, comment: req.body.text, rating: req.body.rating, adminReply: req.body.adminReply || "" };
+        const revData = { 
+            guestName: req.body.name, 
+            comment: req.body.text, 
+            rating: req.body.rating,
+            adminReply: req.body.adminReply || ""
+        };
         await ReviewModel.create(revData);
         res.status(201).json({ message: "Review added" });
     } catch (e) { res.status(500).json({ error: "Error adding review" }); }
 });
+
 app.put('/api/reviews/:id', async (req, res) => {
-    const updateData = { guestName: req.body.name, comment: req.body.text, rating: req.body.rating, adminReply: req.body.adminReply };
-    await ReviewModel.findByIdAndUpdate(req.params.id, updateData);
-    res.json({ message: "Updated" });
+    try {
+        const updateData = {
+            guestName: req.body.name,
+            comment: req.body.text,
+            rating: req.body.rating,
+            adminReply: req.body.adminReply
+        };
+        await ReviewModel.findByIdAndUpdate(req.params.id, updateData);
+        res.json({ message: "Updated" });
+    } catch (e) { res.status(500).json({ error: "Update failed" }); }
 });
+
 app.delete('/api/reviews/:id', async (req, res) => {
-    await ReviewModel.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted" });
+    try {
+        await ReviewModel.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted" });
+    } catch (e) { res.status(500).json({ error: "Delete failed" }); }
 });
 
 // ==========================================
-// 6. SERVER STARTUP
+// 7. SERVER STARTUP
 // ==========================================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`🚀 Desert Camp Server is running on port ${PORT}`);
+    console.log(`🚀 Desert Camp Server is running smoothly on port ${PORT}`);
 });
