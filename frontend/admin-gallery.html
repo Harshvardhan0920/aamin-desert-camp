@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <script>
+        // Security Check: Agar login nahi hai toh login page par bhej do
         if (localStorage.getItem('adminAuth') !== 'true') {
             alert("Direct access denied! Please login first.");
             window.location.href = 'admin-login.html';
@@ -25,72 +26,36 @@
         </button>
     </div>
 
-    <div id="mobileSidebar" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden">
-        <aside class="w-64 bg-white shadow-xl flex flex-col h-full transform transition-transform">
-            <div class="p-4 flex justify-end border-b border-gray-100">
-                <button id="closeMenuBtn" class="text-2xl text-gray-500 hover:text-red-500 transition">
-                    <i class="fa-solid fa-times"></i>
-                </button>
+    <aside id="sidebar" class="w-64 bg-white shadow-xl flex flex-col h-full fixed md:relative z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 border-r border-gray-100">
+        <div class="p-6 flex justify-between items-center border-b border-gray-100">
+            <div class="text-xl font-extrabold text-yellow-700 flex items-center gap-3">
+                <i class="fa-solid fa-campground text-2xl"></i> Aamin Admin
             </div>
-            
-            <nav class="flex-1 px-4 space-y-2 mt-4 overflow-y-auto">
-                <a href="index.html" class="flex items-center gap-3 px-4 py-3 mb-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 font-bold">
-                    <i class="fa-solid fa-globe w-5"></i> View Website
-                </a>
-                <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
-                    <i class="fa-solid fa-chart-line w-5"></i> Dashboard
-                </a>
-                <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
-                    <i class="fa-solid fa-calendar-check w-5"></i> Bookings
-                </a>
-                <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
-                    <i class="fa-solid fa-bed w-5"></i> Manage Rooms
-                </a>
-                <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white font-bold shadow-md">
-                    <i class="fa-solid fa-images w-5"></i> Gallery Edit
-                </a>
-                <a href="admin-reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
-                    <i class="fa-solid fa-star w-5"></i> Manage Reviews
-                </a>
-                <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 font-semibold hover:bg-gray-50">
-                    <i class="fa-solid fa-envelope w-5"></i> Messages
-                </a>
-            </nav>
-
-            <div class="p-4 border-t border-gray-100">
-                <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition">
-                    <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
-                </button>
-            </div>
-        </aside>
-    </div>
-
-    <aside class="w-64 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 relative border-r border-gray-100">
-        <div class="p-6 text-xl font-extrabold text-yellow-700 flex items-center gap-3 border-b border-gray-100">
-            <i class="fa-solid fa-campground text-2xl"></i>
-            Aamin Admin
+            <button id="closeMenuBtn" class="md:hidden text-gray-500 hover:text-red-500">
+                <i class="fa-solid fa-times text-xl"></i>
+            </button>
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6 overflow-y-auto">
-            <a href="index.html" class="flex items-center gap-3 px-4 py-3 mb-4 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-600 hover:text-white transition font-bold shadow-sm">
+            <a href="index.html" class="flex items-center gap-3 px-4 py-3 mb-4 rounded-xl bg-blue-50 text-blue-700 font-bold shadow-sm hover:bg-blue-600 hover:text-white transition">
                 <i class="fa-solid fa-globe w-5"></i> View Website
             </a>
-            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 font-semibold transition">
                 <i class="fa-solid fa-chart-line w-5"></i> Dashboard
             </a>
-            <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
+            <a href="admin-bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 font-semibold transition">
                 <i class="fa-solid fa-calendar-check w-5"></i> Bookings
             </a>
-            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
+            <a href="admin-rooms.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 font-semibold transition">
                 <i class="fa-solid fa-bed w-5"></i> Manage Rooms
             </a>
-            <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white shadow-md font-bold">
+            <a href="admin-gallery.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-yellow-600 text-white shadow-md font-bold transition">
                 <i class="fa-solid fa-images w-5"></i> Gallery Edit
             </a>
-            <a href="admin-reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
+            <a href="admin-reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 font-semibold transition">
                 <i class="fa-solid fa-star w-5"></i> Manage Reviews
             </a>
-            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 transition font-semibold">
+            <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-yellow-50 font-semibold transition">
                 <i class="fa-solid fa-envelope w-5"></i> Messages
             </a>
         </nav>
@@ -104,7 +69,7 @@
 
     <main class="flex-1 flex flex-col h-full overflow-y-auto bg-gray-50 pt-16 md:pt-0">
         
-        <header class="bg-white shadow-sm px-4 md:px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+        <header class="bg-white shadow-sm px-4 md:px-8 py-5 flex justify-between items-center sticky top-0 z-10 border-b">
             <h2 class="text-xl md:text-2xl font-bold text-gray-800">Manage Gallery</h2>
             <div class="flex items-center gap-4">
                 <span class="text-gray-600 font-medium hidden sm:block">Hello, Admin</span>
@@ -116,21 +81,26 @@
             
             <div class="w-full lg:w-1/3">
                 <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-20 md:top-24">
-                    <h3 class="text-lg md:text-xl font-bold mb-4 md:mb-6 text-gray-800 border-b pb-3">Upload New Photo</h3>
+                    <h3 id="formTitle" class="text-lg md:text-xl font-bold mb-4 md:mb-6 text-gray-800 border-b pb-3">Upload New Photo</h3>
                     
                     <form id="galleryForm" class="space-y-4 md:space-y-5">
+                        <input type="hidden" id="photoId">
+                        
                         <div>
                             <label class="block text-sm font-semibold text-gray-600 mb-2">Select Image File</label>
-                            <input type="file" id="imageFile" accept="image/*" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-xl outline-none transition cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 text-sm">
+                            <input type="file" id="imageFile" accept="image/*" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-xl outline-none cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 text-sm transition">
                         </div>
 
-                        <div id="previewContainer" class="hidden border rounded-xl overflow-hidden bg-gray-50">
-                            <img id="imagePreview" src="" class="w-full h-32 md:h-40 object-cover">
+                        <div id="previewContainer" class="hidden border rounded-xl overflow-hidden bg-gray-50 relative">
+                            <img id="imagePreview" src="" class="w-full h-40 object-cover">
                         </div>
                         
                         <div class="pt-2">
-                            <button type="submit" id="submitBtn" class="w-full bg-yellow-600 text-white font-bold p-3 rounded-xl hover:bg-yellow-700 transition shadow-md flex justify-center items-center gap-2">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Photo
+                            <button type="submit" id="submitBtn" class="w-full bg-yellow-600 text-white font-bold p-3 rounded-xl hover:bg-yellow-700 transition shadow-md flex justify-center items-center gap-2 transform active:scale-95">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> <span id="btnText">Upload Photo</span>
+                            </button>
+                            <button type="button" id="cancelEditBtn" onclick="cancelEdit()" class="w-full mt-3 bg-gray-200 text-gray-700 font-bold p-3 rounded-xl hover:bg-gray-300 transition hidden text-sm md:text-base transform active:scale-95">
+                                Cancel Edit
                             </button>
                         </div>
                     </form>
@@ -139,11 +109,16 @@
             </div>
 
             <div class="w-full lg:w-2/3">
-                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 class="text-lg md:text-xl font-bold mb-4 md:mb-6 text-gray-800 border-b pb-3">Current Gallery</h3>
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[400px]">
+                    <div class="flex justify-between items-center mb-6 border-b pb-3">
+                        <h3 class="text-lg md:text-xl font-bold text-gray-800">Current Gallery</h3>
+                        <button onclick="loadGallery()" class="text-yellow-600 hover:rotate-180 transition-all duration-500">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                    </div>
                     
                     <div id="galleryList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                        <p class="text-gray-500 col-span-full">Loading photos...</p>
+                        <p class="text-gray-500 col-span-full text-center py-10">Loading photos...</p>
                     </div>
                 </div>
             </div>
@@ -151,19 +126,23 @@
     </main>
 
     <script>
+        // --- UI & Sidebar Controls ---
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const closeMenuBtn = document.getElementById('closeMenuBtn');
-        const mobileSidebar = document.getElementById('mobileSidebar');
+        const sidebar = document.getElementById('sidebar');
 
-        mobileMenuBtn.addEventListener('click', () => { mobileSidebar.classList.remove('hidden'); });
-        closeMenuBtn.addEventListener('click', () => { mobileSidebar.classList.add('hidden'); });
+        mobileMenuBtn.addEventListener('click', () => sidebar.classList.remove('-translate-x-full'));
+        closeMenuBtn.addEventListener('click', () => sidebar.classList.add('-translate-x-full'));
 
         function logoutAdmin() {
             localStorage.removeItem('adminAuth');
             window.location.href = 'index.html';
         }
 
-        // Image Preview
+        let isEditing = false;
+        let allPhotos = [];
+
+        // --- Image Preview Logic ---
         document.getElementById('imageFile').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -177,99 +156,141 @@
             reader.readAsDataURL(file);
         });
 
-        // Load Gallery
+        // --- Fetch & Load Gallery ---
         async function loadGallery() {
             const container = document.getElementById('galleryList');
-            container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading...</p>';
+            container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Fetching...</p>';
             
             try {
                 const res = await fetch('/api/gallery');
-                const photos = await res.json();
+                allPhotos = await res.json();
                 container.innerHTML = '';
-                if (!Array.isArray(photos) || photos.length === 0) {
-                    container.innerHTML = `<p class="text-gray-500 col-span-full text-center py-8">No photos found. Upload your first photo!</p>`;
+                
+                if (allPhotos.length === 0) {
+                    container.innerHTML = `<p class="text-gray-400 col-span-full text-center py-20 italic">No photos found. Start by uploading one!</p>`;
                     return;
                 }
 
-                photos.forEach(photo => {
-                    const photoId = photo._id || photo.id; 
+                allPhotos.forEach(photo => {
+                    const id = photo._id || photo.id; 
                     container.innerHTML += `
-                        <div class="relative group rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-gray-100 h-40 md:h-48">
+                        <div class="relative group rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-gray-100 h-44">
                             <img src="${photo.image}" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition duration-300">
-                                <button onclick="deletePhoto('${photoId}')" class="bg-red-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-700 transition shadow-lg flex items-center gap-2">
-                                    <i class="fa-solid fa-trash"></i> Delete
-                                </button>
+                            <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="flex gap-2">
+                                    <button onclick="editPhoto('${id}')" class="bg-blue-600 text-white p-2 rounded-lg font-bold hover:bg-blue-700 transition transform hover:scale-110 shadow-lg">
+                                        <i class="fa-solid fa-pen"></i> Edit
+                                    </button>
+                                    <button onclick="deletePhoto('${id}')" class="bg-red-600 text-white p-2 rounded-lg font-bold hover:bg-red-700 transition transform hover:scale-110 shadow-lg">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     `;
                 });
             } catch (error) {
-                container.innerHTML = '<p class="text-red-500 col-span-full text-center">Server error while loading photos.</p>';
+                container.innerHTML = '<p class="text-red-500 col-span-full text-center font-bold">Server Error!</p>';
             }
         }
 
-        // 🛑 FIXED: FORM DATA UPLOAD LOGIC 🛑
+        // --- Handle Form Submission (Upload & Update) ---
         document.getElementById('galleryForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const msgBox = document.getElementById('msg');
             const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
             const fileInput = document.getElementById('imageFile');
+            const photoId = document.getElementById('photoId').value;
 
-            if(fileInput.files.length === 0) {
-                msgBox.textContent = "Please select an image file first!";
-                msgBox.className = "mt-4 text-center font-bold text-red-700 bg-red-100 p-2 rounded-xl text-sm";
+            // Agar upload kar rahe hain aur file nahi select ki
+            if(!isEditing && fileInput.files.length === 0) {
+                msgBox.textContent = "Please select an image file!";
+                msgBox.className = "mt-4 text-center font-bold text-red-600 bg-red-50 p-2 rounded-xl text-sm";
                 return;
             }
 
-            // Ab Data File ke roop me bhej rahe hain
             const formData = new FormData();
-            formData.append('image', fileInput.files[0]);
+            if(fileInput.files.length > 0) {
+                formData.append('image', fileInput.files[0]);
+            }
 
             try {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+                btnText.textContent = isEditing ? 'Updating...' : 'Uploading...';
 
-                const res = await fetch('/api/gallery', {
-                    method: 'POST',
-                    body: formData // Note: Content-Type header browser khud set karega FormData ke liye
-                });
+                const url = isEditing ? `/api/gallery/${photoId}` : '/api/gallery';
+                const method = isEditing ? 'PUT' : 'POST';
+
+                const res = await fetch(url, { method: method, body: formData });
 
                 if (res.ok) {
-                    msgBox.textContent = "Photo Uploaded Successfully!";
-                    msgBox.className = "mt-4 text-center font-bold text-green-700 bg-green-100 p-2 rounded-xl text-sm";
-                    
-                    document.getElementById('galleryForm').reset();
-                    document.getElementById('previewContainer').classList.add('hidden');
-                    loadGallery(); 
-                    
+                    msgBox.textContent = isEditing ? "Photo Updated Successfully!" : "Photo Uploaded Successfully!";
+                    msgBox.className = "mt-4 text-center font-bold text-green-700 bg-green-50 p-2 rounded-xl text-sm border border-green-100";
+                    cancelEdit(); // Reset form
+                    loadGallery(); // Refresh list
                     setTimeout(() => msgBox.textContent = '', 3000);
                 } else {
-                    throw new Error("Server Error");
+                    throw new Error("Action Failed");
                 }
             } catch (error) {
-                msgBox.textContent = "Error uploading photo!";
-                msgBox.className = "mt-4 text-center font-bold text-red-700 bg-red-100 p-2 rounded-xl text-sm";
+                msgBox.textContent = "Error: " + error.message;
+                msgBox.className = "mt-4 text-center font-bold text-red-700 bg-red-50 p-2 rounded-xl text-sm";
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Photo';
+                btnText.textContent = isEditing ? 'Update Photo' : 'Upload Photo';
             }
         });
 
+        // --- Edit Photo Function ---
+        function editPhoto(id) {
+            const photo = allPhotos.find(p => (p._id || p.id) === id);
+            if(!photo) return;
+
+            isEditing = true;
+            document.getElementById('photoId').value = id;
+            document.getElementById('imagePreview').src = photo.image;
+            document.getElementById('previewContainer').classList.remove('hidden');
+            
+            document.getElementById('formTitle').textContent = "Update Existing Photo";
+            document.getElementById('btnText').textContent = "Update Photo";
+            document.getElementById('submitBtn').classList.replace('bg-yellow-600', 'bg-blue-600');
+            document.getElementById('submitBtn').classList.replace('hover:bg-yellow-700', 'hover:bg-blue-700');
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- Cancel Edit Mode ---
+        function cancelEdit() {
+            isEditing = false;
+            document.getElementById('galleryForm').reset();
+            document.getElementById('photoId').value = '';
+            document.getElementById('previewContainer').classList.add('hidden');
+            
+            document.getElementById('formTitle').textContent = "Upload New Photo";
+            document.getElementById('btnText').textContent = "Upload Photo";
+            document.getElementById('submitBtn').classList.replace('bg-blue-600', 'bg-yellow-600');
+            document.getElementById('submitBtn').classList.replace('hover:bg-blue-700', 'hover:bg-yellow-700');
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        }
+
+        // --- Delete Photo Function ---
         async function deletePhoto(id) {
-            if (!confirm("Are you sure you want to permanently delete this photo?")) return;
+            if (!confirm("Are you sure you want to delete this photo from your website?")) return;
             try {
                 const res = await fetch(`/api/gallery/${id}`, { method: 'DELETE' });
                 if (res.ok) {
                     loadGallery(); 
                 } else {
-                    alert("Failed to delete photo from server.");
+                    alert("Delete failed on server.");
                 }
             } catch (error) {
-                alert("Connection error while deleting.");
+                alert("Connection error!");
             }
         }
 
+        // Initial Load
         document.addEventListener('DOMContentLoaded', loadGallery);
     </script>
 </body>
